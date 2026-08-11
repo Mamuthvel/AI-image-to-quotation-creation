@@ -1,0 +1,359 @@
+{
+  "_comment": "Phonetic and shorthand corrections seen on customer sheets. Grows automatically every time a user overrides a match (see server/services/learning.js).",
+  "spelling": {
+    "switan": "switch",
+    "switcn": "switch",
+    "swithch": "switch",
+    "swich": "switch",
+    "swtch": "switch",
+    "sitch": "switch",
+    "plugo": "plug",
+    "pluge": "plug",
+    "plag": "plug",
+    "olde": "holder",
+    "older": "holder",
+    "oldar": "holder",
+    "holdar": "holder",
+    "hloder": "holder",
+    "domy": "dome",
+    "dhom": "dome",
+    "doom": "dome",
+    "cigut": "light",
+    "ligt": "light",
+    "lite": "light",
+    "layt": "light",
+    "rose": "rose",
+    "roje": "rose",
+    "roze": "rose",
+    "sheet": "sheet",
+    "shet": "sheet",
+    "shat": "sheet",
+    "sheat": "sheet",
+    "regulater": "regulator",
+    "regulater ": "regulator",
+    "reglator": "regulator",
+    "regulater.": "regulator",
+    "kum": "frame",
+    "fram": "frame",
+    "frem": "frame",
+    "wood kum": "wood frame",
+    "juction": "junction",
+    "junktion": "junction",
+    "bendh": "bend",
+    "clamb": "clamp",
+    "scrue": "screw",
+    "screw ": "screw",
+    "skru": "screw",
+    "socet": "socket",
+    "sokket": "socket",
+    "socked": "socket",
+    "gangbox": "gang box",
+    "gang bax": "gang box",
+    "concield": "concealed",
+    "concel": "concealed",
+    "amps": "amp",
+    "ams": "amp",
+    "am": "amp",
+    "amper": "amp",
+    "mtr": "meter",
+    "mts": "meter",
+    "nos": "",
+    "pcs": "",
+    "pices": "",
+    "peices": "",
+    "rownd": "round",
+    "raund": "round",
+    "ruond": "round",
+    "whit": "white",
+    "wite": "white",
+    "wight": "white",
+    "cerling": "ceiling",
+    "celing": "ceiling",
+    "ceilling": "ceiling",
+    "cieling": "ceiling",
+    "sait": "sai",
+    "stor": "star",
+    "sters": "star",
+    "gangbax": "gang box",
+    "bax": "box",
+    "boxs": "box",
+    "wier": "wire",
+    "wyre": "wire",
+    "koil": "coil",
+    "socke": "socket",
+    "reguletor": "regulator",
+    "regultor": "regulator",
+    "mcp": "mcb",
+    "mcb.": "mcb"
+  },
+  "phrases": {
+    "sai holder": "batten holder",
+    "sai older": "batten holder",
+    "sai oldar": "batten holder",
+    "say holder": "batten holder",
+    "2 by 2": "2way",
+    "2by2": "2way",
+    "two by two": "2way",
+    "two way": "2way",
+    "one way": "1way",
+    "1 by 1": "1way",
+    "ac switch": "32amp dp ac switch",
+    "ac box": "32amp dp ac switch",
+    "gm white sheet": "white cover plate",
+    "gm whit sheet": "white cover plate",
+    "gm sheet": "white cover plate",
+    "white sheet": "white cover plate",
+    "round sheet": "round sheet",
+    "star screw": "star screw",
+    "drywall screw": "drywall screw",
+    "tap roll": "insulation tape",
+    "tape roll": "insulation tape",
+    "luse wire": "flexible wire",
+    "loose wire": "flexible wire",
+    "coil wire": "wire coil",
+    "wire coil": "wire coil",
+    "sq mm": "sqmm",
+    "sq.mm": "sqmm",
+    "square mm": "sqmm"
+  },
+  "categoryTerms": {
+    "GANG_BOX": [
+      "gang box",
+      "concealed box",
+      "modular box",
+      "wall box",
+      "back box"
+    ],
+    "COVER_PLATE": [
+      "cover plate",
+      "white cover plate",
+      "front plate",
+      "modular plate",
+      "gm plate"
+    ],
+    "ROUND_SHEET": [
+      "round sheet",
+      "round plate",
+      "round cover"
+    ],
+    "WIRE": [
+      "wire coil",
+      "coil",
+      "house wire",
+      "sqmm wire",
+      "fr wire"
+    ],
+    "FLEX_WIRE": [
+      "flexible wire",
+      "flex wire",
+      "luse wire",
+      "core wire",
+      "multi strand"
+    ],
+    "MCB": [
+      "mcb",
+      "mcp",
+      "breaker",
+      "miniature circuit breaker"
+    ],
+    "RCCB": [
+      "rccb",
+      "elcb",
+      "earth leakage"
+    ],
+    "DISTRIBUTION_BOX": [
+      "distribution box",
+      "db box",
+      "spn box"
+    ],
+    "JUNCTION_BOX": [
+      "junction",
+      "junction box",
+      "open junction"
+    ],
+    "BEND": [
+      "bend",
+      "pvc bend",
+      "elbow"
+    ],
+    "CONDUIT_PIPE": [
+      "conduit",
+      "conduit pipe",
+      "pvc pipe"
+    ],
+    "CLAMP": [
+      "clamp",
+      "wiring clamp"
+    ],
+    "SADDLE": [
+      "saddle",
+      "saddle clamp"
+    ],
+    "SCREW": [
+      "screw",
+      "star screw",
+      "drywall screw",
+      "self tapping"
+    ],
+    "WALL_PLUG": [
+      "wall plug",
+      "gitti",
+      "raw plug",
+      "anchor plug"
+    ],
+    "TAPE": [
+      "tape",
+      "tap roll",
+      "insulation tape",
+      "pvc tape"
+    ],
+    "SWITCH": [
+      "switch",
+      "1way switch",
+      "2way switch",
+      "bell push"
+    ],
+    "SOCKET": [
+      "socket",
+      "plug point",
+      "power socket"
+    ],
+    "PLUG_TOP": [
+      "plug",
+      "plug top",
+      "top plug",
+      "3pin plug"
+    ],
+    "REGULATOR": [
+      "regulator",
+      "fan regulator",
+      "dimmer"
+    ],
+    "HOLDER": [
+      "holder",
+      "batten holder",
+      "angle holder",
+      "lamp holder"
+    ],
+    "CEILING_ROSE": [
+      "ceiling rose",
+      "rose"
+    ],
+    "SWITCH_DOME": [
+      "switch dome",
+      "dome"
+    ],
+    "FAN_BOX": [
+      "fan box",
+      "fan hook box"
+    ],
+    "LED_BULB": [
+      "led bulb",
+      "bulb",
+      "lamp"
+    ],
+    "LED_PANEL": [
+      "led panel",
+      "panel light",
+      "cob light",
+      "downlight"
+    ],
+    "LIGHT_FITTING": [
+      "light",
+      "light fitting",
+      "tube light",
+      "flood light",
+      "wood frame light"
+    ],
+    "FAN": [
+      "fan",
+      "ceiling fan",
+      "exhaust fan"
+    ],
+    "DOOR_BELL": [
+      "door bell",
+      "bell",
+      "ding dong"
+    ],
+    "CASING_CAPPING": [
+      "casing",
+      "capping",
+      "casing capping"
+    ],
+    "LUG": [
+      "lug",
+      "copper lug",
+      "thimble"
+    ],
+    "EXTENSION_BOARD": [
+      "extension board",
+      "extension box",
+      "spike guard"
+    ],
+    "TOOL": [
+      "tester",
+      "plier",
+      "cutter",
+      "screwdriver"
+    ]
+  },
+  "brandTerms": {
+    "MUSK": [
+      "musk"
+    ],
+    "ANCHOR": [
+      "anchor"
+    ],
+    "GM": [
+      "gm",
+      "gem",
+      "g m",
+      "gm modular"
+    ],
+    "E-CLASS": [
+      "e-class",
+      "eclass",
+      "e class"
+    ],
+    "HILLS": [
+      "hills",
+      "hill"
+    ],
+    "POLYCAB": [
+      "polycab",
+      "poly cab"
+    ],
+    "FINOLEX": [
+      "finolex",
+      "fino"
+    ],
+    "LEGRAND": [
+      "legrand",
+      "lagrand",
+      "legrend"
+    ],
+    "HAVELLS": [
+      "havells",
+      "havels",
+      "hevells"
+    ],
+    "VIR": [
+      "vir"
+    ],
+    "3M": [
+      "3m",
+      "three m"
+    ],
+    "STEELGRIP": [
+      "steelgrip",
+      "steel grip"
+    ],
+    "CROMPTON": [
+      "crompton",
+      "crompten"
+    ],
+    "TAPARIA": [
+      "taparia"
+    ]
+  }
+}

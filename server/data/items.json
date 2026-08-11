@@ -1,0 +1,2966 @@
+[
+  {
+    "sku": "BND-125",
+    "name": "1 1/4\" PVC 1.5 BEND",
+    "brand": "GENERIC",
+    "category": "BEND",
+    "uom": "Nos",
+    "rate": 18,
+    "attrs": {
+      "sizeInch": 1.25,
+      "grade": 1.5
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "PIPE-125",
+    "name": "1 1/4\" PVC CONDUIT PIPE 1.5MM",
+    "brand": "GENERIC",
+    "category": "CONDUIT_PIPE",
+    "uom": "Nos",
+    "rate": 111.6,
+    "attrs": {
+      "sizeInch": 1.25,
+      "grade": 1.5
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "CLP-125",
+    "name": "1 1/4\" WIRING CLAMP",
+    "brand": "GENERIC",
+    "category": "CLAMP",
+    "uom": "Nos",
+    "rate": 3.24,
+    "attrs": {
+      "sizeInch": 1.25
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "BND-1",
+    "name": "1\" PVC 1.5 BEND",
+    "brand": "GENERIC",
+    "category": "BEND",
+    "uom": "Nos",
+    "rate": 12,
+    "attrs": {
+      "sizeInch": 1,
+      "grade": 1.5
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "PIPE-1",
+    "name": "1\" PVC CONDUIT PIPE 1.5MM",
+    "brand": "GENERIC",
+    "category": "CONDUIT_PIPE",
+    "uom": "Nos",
+    "rate": 74.4,
+    "attrs": {
+      "sizeInch": 1,
+      "grade": 1.5
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "CLP-1",
+    "name": "1\" WIRING CLAMP",
+    "brand": "GENERIC",
+    "category": "CLAMP",
+    "uom": "Nos",
+    "rate": 2.16,
+    "attrs": {
+      "sizeInch": 1
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "JB-3W-1",
+    "name": "1\"OPEN JUNCTION(3 WAY)",
+    "brand": "GENERIC",
+    "category": "JUNCTION_BOX",
+    "uom": "Nos",
+    "rate": 22,
+    "attrs": {
+      "sizeInch": 1,
+      "ways": 3
+    },
+    "popularity": 78
+  },
+  {
+    "sku": "JB-4W-1",
+    "name": "1\"OPEN JUNCTION(4 WAY)",
+    "brand": "GENERIC",
+    "category": "JUNCTION_BOX",
+    "uom": "Nos",
+    "rate": 27.5,
+    "attrs": {
+      "sizeInch": 1,
+      "ways": 4
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "BND-05",
+    "name": "1/2\" PVC 1.5 BEND",
+    "brand": "GENERIC",
+    "category": "BEND",
+    "uom": "Nos",
+    "rate": 6,
+    "attrs": {
+      "sizeInch": 0.5,
+      "grade": 1.5
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "PIPE-05",
+    "name": "1/2\" PVC CONDUIT PIPE 1.5MM",
+    "brand": "GENERIC",
+    "category": "CONDUIT_PIPE",
+    "uom": "Nos",
+    "rate": 37.2,
+    "attrs": {
+      "sizeInch": 0.5,
+      "grade": 1.5
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "CLP-05",
+    "name": "1/2\" WIRING CLAMP",
+    "brand": "GENERIC",
+    "category": "CLAMP",
+    "uom": "Nos",
+    "rate": 1.08,
+    "attrs": {
+      "sizeInch": 0.5
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "MCB-LEG-SP-10",
+    "name": "10AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 150,
+    "attrs": {
+      "amps": 10,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "DB-SPN-12",
+    "name": "12 WAY SPN DISTRIBUTION BOX",
+    "brand": "LEGRAND",
+    "category": "DISTRIBUTION_BOX",
+    "uom": "Nos",
+    "rate": 2156,
+    "attrs": {
+      "ways": 12,
+      "type": "SPN"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "LED-BULB-12",
+    "name": "12W LED BULB COOL WHITE",
+    "brand": "HAVELLS",
+    "category": "LED_BULB",
+    "uom": "Nos",
+    "rate": 114,
+    "attrs": {
+      "watts": 12,
+      "colourTemp": "COOL"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "LED-PNL-R-12",
+    "name": "12W LED PANEL ROUND RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 274,
+    "attrs": {
+      "watts": 12,
+      "shape": "ROUND"
+    },
+    "popularity": 65
+  },
+  {
+    "sku": "LED-PNL-S-12",
+    "name": "12W LED PANEL SQUARE RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 284,
+    "attrs": {
+      "watts": 12,
+      "shape": "SQUARE"
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "LED-BULB-15",
+    "name": "15W LED BULB COOL WHITE",
+    "brand": "HAVELLS",
+    "category": "LED_BULB",
+    "uom": "Nos",
+    "rate": 127.5,
+    "attrs": {
+      "watts": 15,
+      "colourTemp": "COOL"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "DB-SPN-16",
+    "name": "16 WAY SPN DISTRIBUTION BOX",
+    "brand": "LEGRAND",
+    "category": "DISTRIBUTION_BOX",
+    "uom": "Nos",
+    "rate": 2668,
+    "attrs": {
+      "ways": 16,
+      "type": "SPN"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-HAV-SP-16",
+    "name": "16AMP HAVELLS SP MCB",
+    "brand": "HAVELLS",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 130.72,
+    "attrs": {
+      "amps": 16,
+      "poles": "SP"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-LEG-DP-16",
+    "name": "16AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 395.2,
+    "attrs": {
+      "amps": 16,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-16",
+    "name": "16AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 790.4,
+    "attrs": {
+      "amps": 16,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-16",
+    "name": "16AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 152,
+    "attrs": {
+      "amps": 16,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "LED-PNL-R-18",
+    "name": "18W LED PANEL ROUND RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 346,
+    "attrs": {
+      "watts": 18,
+      "shape": "ROUND"
+    },
+    "popularity": 65
+  },
+  {
+    "sku": "LED-PNL-S-18",
+    "name": "18W LED PANEL SQUARE RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 356,
+    "attrs": {
+      "watts": 18,
+      "shape": "SQUARE"
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "SCR-DW-19x6",
+    "name": "19*6 DRYWALL (BLACK) SCREW(1)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.32,
+    "attrs": {
+      "sizeLabel": "19x6",
+      "head": "DRYWALL"
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "SCR-ST-19x6",
+    "name": "19*6 STAR SCREW (SS)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.45,
+    "attrs": {
+      "sizeLabel": "19x6",
+      "head": "STAR"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "WR-2C-14",
+    "name": "2 CORE 14/36 FLEXIBLE WIRE",
+    "brand": "GENERIC",
+    "category": "FLEX_WIRE",
+    "uom": "METER",
+    "rate": 34,
+    "attrs": {
+      "cores": 2,
+      "strand": "14/36"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "LUG-25",
+    "name": "2.5 SQ MM COPPER LUG",
+    "brand": "GENERIC",
+    "category": "LUG",
+    "uom": "Nos",
+    "rate": 1.8,
+    "attrs": {
+      "coreSqmm": 2.5
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-HAV-SP-20",
+    "name": "20AMP HAVELLS SP MCB",
+    "brand": "HAVELLS",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 133.3,
+    "attrs": {
+      "amps": 20,
+      "poles": "SP"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-LEG-DP-20",
+    "name": "20AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 403,
+    "attrs": {
+      "amps": 20,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-20",
+    "name": "20AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 806,
+    "attrs": {
+      "amps": 20,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-20",
+    "name": "20AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 155,
+    "attrs": {
+      "amps": 20,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "SAD-20",
+    "name": "20MM PVC SADDLE CLAMP",
+    "brand": "GENERIC",
+    "category": "SADDLE",
+    "uom": "Nos",
+    "rate": 1.6,
+    "attrs": {
+      "sizeMm": 20
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "LED-BULB-20",
+    "name": "20W LED BULB COOL WHITE",
+    "brand": "HAVELLS",
+    "category": "LED_BULB",
+    "uom": "Nos",
+    "rate": 150,
+    "attrs": {
+      "watts": 20,
+      "colourTemp": "COOL"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "LT-TUBE-20",
+    "name": "20W LED TUBE LIGHT 4FT",
+    "brand": "HAVELLS",
+    "category": "LIGHT_FITTING",
+    "uom": "Nos",
+    "rate": 245,
+    "attrs": {
+      "watts": 20
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "LED-PNL-R-22",
+    "name": "22W LED PANEL ROUND RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 394,
+    "attrs": {
+      "watts": 22,
+      "shape": "ROUND"
+    },
+    "popularity": 65
+  },
+  {
+    "sku": "LED-PNL-S-22",
+    "name": "22W LED PANEL SQUARE RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 404,
+    "attrs": {
+      "watts": 22,
+      "shape": "SQUARE"
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "SCR-DW-25x6",
+    "name": "25*6 DRYWALL (BLACK) SCREW(1)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.37,
+    "attrs": {
+      "sizeLabel": "25x6",
+      "head": "DRYWALL"
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "SCR-ST-25x6",
+    "name": "25*6 STAR SCREW (SS)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.52,
+    "attrs": {
+      "sizeLabel": "25x6",
+      "head": "STAR"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "MCB-LEG-DP-25",
+    "name": "25AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 462.8,
+    "attrs": {
+      "amps": 25,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-25",
+    "name": "25AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 925.6,
+    "attrs": {
+      "amps": 25,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-25",
+    "name": "25AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 178,
+    "attrs": {
+      "amps": 25,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "CC-25MM",
+    "name": "25MM PVC CASING CAPPING",
+    "brand": "GENERIC",
+    "category": "CASING_CAPPING",
+    "uom": "METER",
+    "rate": 24,
+    "attrs": {
+      "sizeMm": 25
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "SAD-25",
+    "name": "25MM PVC SADDLE CLAMP",
+    "brand": "GENERIC",
+    "category": "SADDLE",
+    "uom": "Nos",
+    "rate": 2.1,
+    "attrs": {
+      "sizeMm": 25
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "WR-3C-14",
+    "name": "3 CORE 14/36 FLEXIBLE WIRE",
+    "brand": "GENERIC",
+    "category": "FLEX_WIRE",
+    "uom": "METER",
+    "rate": 48,
+    "attrs": {
+      "cores": 3,
+      "strand": "14/36"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "RS-GEN-35",
+    "name": "3.5\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 19.2,
+    "attrs": {
+      "sizeInch": 3.5,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "RS-GEN-3",
+    "name": "3\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 15.6,
+    "attrs": {
+      "sizeInch": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "BND-075",
+    "name": "3/4\" PVC 1.5 BEND",
+    "brand": "GENERIC",
+    "category": "BEND",
+    "uom": "Nos",
+    "rate": 8,
+    "attrs": {
+      "sizeInch": 0.75,
+      "grade": 1.5
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "PIPE-075",
+    "name": "3/4\" PVC CONDUIT PIPE 1.5MM",
+    "brand": "GENERIC",
+    "category": "CONDUIT_PIPE",
+    "uom": "Nos",
+    "rate": 49.6,
+    "attrs": {
+      "sizeInch": 0.75,
+      "grade": 1.5
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "CLP-075",
+    "name": "3/4\" WIRING CLAMP",
+    "brand": "GENERIC",
+    "category": "CLAMP",
+    "uom": "Nos",
+    "rate": 1.44,
+    "attrs": {
+      "sizeInch": 0.75
+    },
+    "popularity": 75
+  },
+  {
+    "sku": "JB-DEEP-34",
+    "name": "3/4\"DEEP JUNCTION BOX",
+    "brand": "GENERIC",
+    "category": "JUNCTION_BOX",
+    "uom": "Nos",
+    "rate": 28,
+    "attrs": {
+      "sizeInch": 0.75,
+      "deep": true
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "JB-3W-075",
+    "name": "3/4\"OPEN JUNCTION(3 WAY)",
+    "brand": "GENERIC",
+    "category": "JUNCTION_BOX",
+    "uom": "Nos",
+    "rate": 16,
+    "attrs": {
+      "sizeInch": 0.75,
+      "ways": 3
+    },
+    "popularity": 78
+  },
+  {
+    "sku": "JB-4W-075",
+    "name": "3/4\"OPEN JUNCTION(4 WAY)",
+    "brand": "GENERIC",
+    "category": "JUNCTION_BOX",
+    "uom": "Nos",
+    "rate": 20,
+    "attrs": {
+      "sizeInch": 0.75,
+      "ways": 4
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "MCB-HAV-SP-32",
+    "name": "32AMP HAVELLS SP MCB",
+    "brand": "HAVELLS",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 167.7,
+    "attrs": {
+      "amps": 32,
+      "poles": "SP"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-LEG-DP-32",
+    "name": "32AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 507,
+    "attrs": {
+      "amps": 32,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-32",
+    "name": "32AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 1014,
+    "attrs": {
+      "amps": 32,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-32",
+    "name": "32AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 195,
+    "attrs": {
+      "amps": 32,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "SCR-DW-35x6",
+    "name": "35*6 DRYWALL (BLACK) SCREW(1)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.52,
+    "attrs": {
+      "sizeLabel": "35x6",
+      "head": "DRYWALL"
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "SCR-ST-35x6",
+    "name": "35*6 STAR SCREW (SS)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.73,
+    "attrs": {
+      "sizeLabel": "35x6",
+      "head": "STAR"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "TP-3M-10",
+    "name": "3M TAP ROLL (10MTR)",
+    "brand": "3M",
+    "category": "TAPE",
+    "uom": "Nos",
+    "rate": 19,
+    "attrs": {
+      "lengthMtr": 10
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "TP-3M-6",
+    "name": "3M TAP ROLL (6MTR)",
+    "brand": "3M",
+    "category": "TAPE",
+    "uom": "Nos",
+    "rate": 12,
+    "attrs": {
+      "lengthMtr": 6
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "EXT-BOARD-4",
+    "name": "4 SOCKET EXTENSION BOARD 2MTR",
+    "brand": "ANCHOR",
+    "category": "EXTENSION_BOARD",
+    "uom": "Nos",
+    "rate": 420,
+    "attrs": {
+      "sockets": 4
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "DB-SPN-4",
+    "name": "4 WAY SPN DISTRIBUTION BOX",
+    "brand": "LEGRAND",
+    "category": "DISTRIBUTION_BOX",
+    "uom": "Nos",
+    "rate": 1132,
+    "attrs": {
+      "ways": 4,
+      "type": "SPN"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "RS-GEN-45",
+    "name": "4.5\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 27.6,
+    "attrs": {
+      "sizeInch": 4.5,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "RS-GEN-4",
+    "name": "4\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 22.8,
+    "attrs": {
+      "sizeInch": 4,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "RCCB-LEG-40",
+    "name": "40A LEGRAND DP RCCB 30mA",
+    "brand": "LEGRAND",
+    "category": "RCCB",
+    "uom": "Nos",
+    "rate": 2480,
+    "attrs": {
+      "amps": 40,
+      "poles": "DP",
+      "sensitivity": 30
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "MCB-LEG-DP-40",
+    "name": "40AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 800.8,
+    "attrs": {
+      "amps": 40,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-40",
+    "name": "40AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 1601.6,
+    "attrs": {
+      "amps": 40,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-40",
+    "name": "40AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 308,
+    "attrs": {
+      "amps": 40,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "CC-40MM",
+    "name": "40MM PVC CASING CAPPING",
+    "brand": "GENERIC",
+    "category": "CASING_CAPPING",
+    "uom": "METER",
+    "rate": 38,
+    "attrs": {
+      "sizeMm": 40
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "RS-GEN-55",
+    "name": "5.5\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 37.2,
+    "attrs": {
+      "sizeInch": 5.5,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "RS-GEN-5",
+    "name": "5\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 32.4,
+    "attrs": {
+      "sizeInch": 5,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "SCR-DW-50x6",
+    "name": "50*6 DRYWALL (BLACK) SCREW(1)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 0.78,
+    "attrs": {
+      "sizeLabel": "50x6",
+      "head": "DRYWALL"
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "SCR-ST-50x6",
+    "name": "50*6 STAR SCREW (SS)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 1.09,
+    "attrs": {
+      "sizeLabel": "50x6",
+      "head": "STAR"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "LT-FLOOD-50",
+    "name": "50W LED FLOOD LIGHT",
+    "brand": "HAVELLS",
+    "category": "LIGHT_FITTING",
+    "uom": "Nos",
+    "rate": 690,
+    "attrs": {
+      "watts": 50
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "LED-BULB-5",
+    "name": "5W LED BULB COOL WHITE",
+    "brand": "HAVELLS",
+    "category": "LED_BULB",
+    "uom": "Nos",
+    "rate": 82.5,
+    "attrs": {
+      "watts": 5,
+      "colourTemp": "COOL"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "LUG-6",
+    "name": "6 SQ MM COPPER LUG",
+    "brand": "GENERIC",
+    "category": "LUG",
+    "uom": "Nos",
+    "rate": 3.6,
+    "attrs": {
+      "coreSqmm": 6
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "DB-SPN-6",
+    "name": "6 WAY SPN DISTRIBUTION BOX",
+    "brand": "LEGRAND",
+    "category": "DISTRIBUTION_BOX",
+    "uom": "Nos",
+    "rate": 1388,
+    "attrs": {
+      "ways": 6,
+      "type": "SPN"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "FAN-EXH-6",
+    "name": "6\" EXHAUST FAN",
+    "brand": "CROMPTON",
+    "category": "FAN",
+    "uom": "Nos",
+    "rate": 1120,
+    "attrs": {
+      "sizeInch": 6,
+      "type": "EXHAUST"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "RS-GEN-6",
+    "name": "6\" PVC ROUND SHEET WHITE",
+    "brand": "GENERIC",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 44.4,
+    "attrs": {
+      "sizeInch": 6,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "CUTTER-6",
+    "name": "6\" WIRE CUTTING PLIER",
+    "brand": "TAPARIA",
+    "category": "TOOL",
+    "uom": "Nos",
+    "rate": 380,
+    "attrs": {
+      "sizeInch": 6
+    },
+    "popularity": 25
+  },
+  {
+    "sku": "SCR-DW-63x6",
+    "name": "63*6 DRYWALL (BLACK) SCREW(1)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 1.05,
+    "attrs": {
+      "sizeLabel": "63x6",
+      "head": "DRYWALL"
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "SCR-ST-63x6",
+    "name": "63*6 STAR SCREW (SS)",
+    "brand": "GENERIC",
+    "category": "SCREW",
+    "uom": "Nos",
+    "rate": 1.47,
+    "attrs": {
+      "sizeLabel": "63x6",
+      "head": "STAR"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "RCCB-LEG-63",
+    "name": "63A LEGRAND FP RCCB 100mA",
+    "brand": "LEGRAND",
+    "category": "RCCB",
+    "uom": "Nos",
+    "rate": 4650,
+    "attrs": {
+      "amps": 63,
+      "poles": "FP",
+      "sensitivity": 100
+    },
+    "popularity": 25
+  },
+  {
+    "sku": "MCB-LEG-DP-63",
+    "name": "63AMP LEGRAND RX DP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 1055.6,
+    "attrs": {
+      "amps": 63,
+      "poles": "DP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-FP-63",
+    "name": "63AMP LEGRAND RX FP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 2111.2,
+    "attrs": {
+      "amps": 63,
+      "poles": "FP"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "MCB-LEG-SP-63",
+    "name": "63AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 406,
+    "attrs": {
+      "amps": 63,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "MCB-HAV-SP-6",
+    "name": "6AMP HAVELLS SP MCB",
+    "brand": "HAVELLS",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 127.28,
+    "attrs": {
+      "amps": 6,
+      "poles": "SP"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "MCB-LEG-SP-6",
+    "name": "6AMP LEGRAND RX SP MCP",
+    "brand": "LEGRAND",
+    "category": "MCB",
+    "uom": "Nos",
+    "rate": 148,
+    "attrs": {
+      "amps": 6,
+      "poles": "SP"
+    },
+    "popularity": 88
+  },
+  {
+    "sku": "WP-6MM",
+    "name": "6MM PVC WALL PLUG (GITTI)",
+    "brand": "GENERIC",
+    "category": "WALL_PLUG",
+    "uom": "Nos",
+    "rate": 0.28,
+    "attrs": {
+      "sizeMm": 6
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "LED-PNL-R-6",
+    "name": "6W LED PANEL ROUND RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 202,
+    "attrs": {
+      "watts": 6,
+      "shape": "ROUND"
+    },
+    "popularity": 65
+  },
+  {
+    "sku": "LED-PNL-S-6",
+    "name": "6W LED PANEL SQUARE RECESSED",
+    "brand": "HAVELLS",
+    "category": "LED_PANEL",
+    "uom": "Nos",
+    "rate": 212,
+    "attrs": {
+      "watts": 6,
+      "shape": "SQUARE"
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "LT-WF-6x4",
+    "name": "6x4 WOOD FRAME LIGHT FITTING",
+    "brand": "GENERIC",
+    "category": "LIGHT_FITTING",
+    "uom": "Nos",
+    "rate": 285,
+    "attrs": {
+      "sizeLabel": "6x4",
+      "material": "WOOD"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "DB-SPN-8",
+    "name": "8 WAY SPN DISTRIBUTION BOX",
+    "brand": "LEGRAND",
+    "category": "DISTRIBUTION_BOX",
+    "uom": "Nos",
+    "rate": 1644,
+    "attrs": {
+      "ways": 8,
+      "type": "SPN"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "WP-8MM",
+    "name": "8MM PVC WALL PLUG (GITTI)",
+    "brand": "GENERIC",
+    "category": "WALL_PLUG",
+    "uom": "Nos",
+    "rate": 0.42,
+    "attrs": {
+      "sizeMm": 8
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "LT-WF-8x4",
+    "name": "8x4 WOOD FRAME LIGHT FITTING",
+    "brand": "GENERIC",
+    "category": "LIGHT_FITTING",
+    "uom": "Nos",
+    "rate": 340,
+    "attrs": {
+      "sizeLabel": "8x4",
+      "material": "WOOD"
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "LED-BULB-9",
+    "name": "9W LED BULB COOL WHITE",
+    "brand": "HAVELLS",
+    "category": "LED_BULB",
+    "uom": "Nos",
+    "rate": 100.5,
+    "attrs": {
+      "watts": 9,
+      "colourTemp": "COOL"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "GB-ANCH-12M",
+    "name": "ANCHOR PVC GANG BOX 12M",
+    "brand": "ANCHOR",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 164.02,
+    "attrs": {
+      "modules": 12,
+      "material": "PVC"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "GB-ANCH-18M",
+    "name": "ANCHOR PVC GANG BOX 18M",
+    "brand": "ANCHOR",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 266.68,
+    "attrs": {
+      "modules": 18,
+      "material": "PVC"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "GB-ANCH-3M",
+    "name": "ANCHOR PVC GANG BOX 3M",
+    "brand": "ANCHOR",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 89.68,
+    "attrs": {
+      "modules": 3,
+      "material": "PVC"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "GB-ANCH-6M",
+    "name": "ANCHOR PVC GANG BOX 6M",
+    "brand": "ANCHOR",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 128.62,
+    "attrs": {
+      "modules": 6,
+      "material": "PVC"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "SO-15A-ANCH",
+    "name": "ANCHOR WHITE 15A SOCKET",
+    "brand": "ANCHOR",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 247.9,
+    "attrs": {
+      "amps": 15,
+      "colour": "WHITE"
+    },
+    "popularity": 36
+  },
+  {
+    "sku": "PT-16-3P-ANCH",
+    "name": "ANCHOR WHITE 16A 3PIN PLUG TOP",
+    "brand": "ANCHOR",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 151.7,
+    "attrs": {
+      "amps": 16,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 27
+  },
+  {
+    "sku": "SW-20-1W-ANCH",
+    "name": "ANCHOR WHITE 20A 1WAY SWITCH",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 118.4,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 32
+  },
+  {
+    "sku": "SW-20-1WI-ANCH",
+    "name": "ANCHOR WHITE 20A 1WAY SWITCH WITH INDICATER",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 168.35,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 31
+  },
+  {
+    "sku": "PT-20-3P-ANCH",
+    "name": "ANCHOR WHITE 20A 3PIN PLUG TOP",
+    "brand": "ANCHOR",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 177.6,
+    "attrs": {
+      "amps": 20,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 26
+  },
+  {
+    "sku": "SO-20A-ANCH",
+    "name": "ANCHOR WHITE 20A SOCKET",
+    "brand": "ANCHOR",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 299.7,
+    "attrs": {
+      "amps": 20,
+      "colour": "WHITE"
+    },
+    "popularity": 28
+  },
+  {
+    "sku": "SW-32-DP-ANCH",
+    "name": "ANCHOR WHITE 32A DP AC SWITCH WITH INDICATER",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 344.1,
+    "attrs": {
+      "amps": 32,
+      "poles": "DP",
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 23
+  },
+  {
+    "sku": "SO-5A-ANCH",
+    "name": "ANCHOR WHITE 5AMP SOCKET",
+    "brand": "ANCHOR",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 92.5,
+    "attrs": {
+      "amps": 5,
+      "colour": "WHITE"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "SO-616-ANCH",
+    "name": "ANCHOR WHITE 6/16A COMBINED SOCKET",
+    "brand": "ANCHOR",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 273.8,
+    "attrs": {
+      "amps": 16,
+      "combined": true,
+      "colour": "WHITE"
+    },
+    "popularity": 26
+  },
+  {
+    "sku": "SW-6-1W-ANCH",
+    "name": "ANCHOR WHITE 6AMP 1WAY SWITCH",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 33.3,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 43
+  },
+  {
+    "sku": "SW-6-1WI-ANCH",
+    "name": "ANCHOR WHITE 6AMP 1WAY SWITCH WITH INDICATER",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 77.7,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 25
+  },
+  {
+    "sku": "PT-6-2P-ANCH",
+    "name": "ANCHOR WHITE 6AMP 2PIN PLUG TOP",
+    "brand": "ANCHOR",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 48.1,
+    "attrs": {
+      "amps": 6,
+      "pins": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "SW-6-2W-ANCH",
+    "name": "ANCHOR WHITE 6AMP 2WAY SWITCH",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 62.9,
+    "attrs": {
+      "amps": 6,
+      "ways": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 29
+  },
+  {
+    "sku": "PT-6-3P-ANCH",
+    "name": "ANCHOR WHITE 6AMP 3PIN PLUG TOP",
+    "brand": "ANCHOR",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 70.3,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 33
+  },
+  {
+    "sku": "SO-6A-ANCH",
+    "name": "ANCHOR WHITE 6AMP 3PIN SOCKET",
+    "brand": "ANCHOR",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 107.3,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 32
+  },
+  {
+    "sku": "SW-BELL-ANCH",
+    "name": "ANCHOR WHITE 6AMP BELL PUSH SWITCH",
+    "brand": "ANCHOR",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 70.3,
+    "attrs": {
+      "amps": 6,
+      "type": "BELL_PUSH",
+      "colour": "WHITE"
+    },
+    "popularity": 16
+  },
+  {
+    "sku": "RG-DIM-ANCH",
+    "name": "ANCHOR WHITE FAN REGULATOR DIMMER TYPE",
+    "brand": "ANCHOR",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 414.4,
+    "attrs": {
+      "type": "DIMMER",
+      "colour": "WHITE"
+    },
+    "popularity": 22
+  },
+  {
+    "sku": "RG-STEP-ANCH",
+    "name": "ANCHOR WHITE FAN REGULATOR STEP TYPE",
+    "brand": "ANCHOR",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 310.8,
+    "attrs": {
+      "type": "STEP",
+      "colour": "WHITE"
+    },
+    "popularity": 34
+  },
+  {
+    "sku": "HLD-ANGLE",
+    "name": "ANGLE HOLDER WHITE",
+    "brand": "GENERIC",
+    "category": "HOLDER",
+    "uom": "Nos",
+    "rate": 32,
+    "attrs": {
+      "type": "ANGLE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "HLD-BATTEN",
+    "name": "BATTEN HOLDER (SAI HOLDER) WHITE",
+    "brand": "GENERIC",
+    "category": "HOLDER",
+    "uom": "Nos",
+    "rate": 26,
+    "attrs": {
+      "type": "BATTEN"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "HLD-BRASS",
+    "name": "BRASS BATTEN HOLDER",
+    "brand": "GENERIC",
+    "category": "HOLDER",
+    "uom": "Nos",
+    "rate": 68,
+    "attrs": {
+      "type": "BATTEN",
+      "material": "BRASS"
+    },
+    "popularity": 25
+  },
+  {
+    "sku": "CR-2PLATE",
+    "name": "CEILING ROSE 2 PLATE WHITE",
+    "brand": "GENERIC",
+    "category": "CEILING_ROSE",
+    "uom": "Nos",
+    "rate": 22,
+    "attrs": {
+      "plates": 2
+    },
+    "popularity": 82
+  },
+  {
+    "sku": "CR-3PLATE",
+    "name": "CEILING ROSE 3 PLATE WHITE",
+    "brand": "GENERIC",
+    "category": "CEILING_ROSE",
+    "uom": "Nos",
+    "rate": 29,
+    "attrs": {
+      "plates": 3
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "FAN-CEIL-1200",
+    "name": "CROMPTON CEILING FAN 1200MM",
+    "brand": "CROMPTON",
+    "category": "FAN",
+    "uom": "Nos",
+    "rate": 1780,
+    "attrs": {
+      "sweepMm": 1200
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "FAN-CEIL-900",
+    "name": "CROMPTON CEILING FAN 900MM",
+    "brand": "CROMPTON",
+    "category": "FAN",
+    "uom": "Nos",
+    "rate": 1490,
+    "attrs": {
+      "sweepMm": 900
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "DB-BELL",
+    "name": "DOOR BELL DING DONG",
+    "brand": "ANCHOR",
+    "category": "DOOR_BELL",
+    "uom": "Nos",
+    "rate": 168,
+    "attrs": {},
+    "popularity": 40
+  },
+  {
+    "sku": "CP-ECL-12x4",
+    "name": "E-CLASS 12x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 228.96,
+    "attrs": {
+      "sizeLabel": "12x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-16x4",
+    "name": "E-CLASS 16x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 289.44,
+    "attrs": {
+      "sizeLabel": "16x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-18x4",
+    "name": "E-CLASS 18x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 334.8,
+    "attrs": {
+      "sizeLabel": "18x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-2x4",
+    "name": "E-CLASS 2x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 56.16,
+    "attrs": {
+      "sizeLabel": "2x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-3x4",
+    "name": "E-CLASS 3x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 69.12,
+    "attrs": {
+      "sizeLabel": "3x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-4x4",
+    "name": "E-CLASS 4x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 84.96,
+    "attrs": {
+      "sizeLabel": "4x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-6x4",
+    "name": "E-CLASS 6x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 126.72,
+    "attrs": {
+      "sizeLabel": "6x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "CP-ECL-8x4",
+    "name": "E-CLASS 8x4 WHITE COVER PLATE",
+    "brand": "E-CLASS",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 167.04,
+    "attrs": {
+      "sizeLabel": "8x4",
+      "colour": "WHITE"
+    },
+    "popularity": 55
+  },
+  {
+    "sku": "SW-20-1W-ECL",
+    "name": "E-CLASS WH 20A 1WAY SWITCH",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 64,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 63
+  },
+  {
+    "sku": "SW-20-1WI-ECL",
+    "name": "E-CLASS WH 20A 1WAY SWITCH WITH INDICATER",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 91,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 61
+  },
+  {
+    "sku": "PT-20-3P-ECL",
+    "name": "E-CLASS WH 20A 3PIN PLUG TOP",
+    "brand": "E-CLASS",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 96,
+    "attrs": {
+      "amps": 20,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 52
+  },
+  {
+    "sku": "SO-20A-ECL",
+    "name": "E-CLASS WH 20A SOCKET",
+    "brand": "E-CLASS",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 162,
+    "attrs": {
+      "amps": 20,
+      "colour": "WHITE"
+    },
+    "popularity": 56
+  },
+  {
+    "sku": "SO-15A-ECL",
+    "name": "E-CLASS WHITE 15A SOCKET",
+    "brand": "E-CLASS",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 134,
+    "attrs": {
+      "amps": 15,
+      "colour": "WHITE"
+    },
+    "popularity": 72
+  },
+  {
+    "sku": "PT-16-3P-ECL",
+    "name": "E-CLASS WHITE 16A 3PIN PLUG TOP",
+    "brand": "E-CLASS",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 82,
+    "attrs": {
+      "amps": 16,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 54
+  },
+  {
+    "sku": "SW-32-DP-ECL",
+    "name": "E-CLASS WHITE 32A DP AC SWITCH WITH INDICATER",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 186,
+    "attrs": {
+      "amps": 32,
+      "poles": "DP",
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "SO-5A-ECL",
+    "name": "E-CLASS WHITE 5AMP SOCKET",
+    "brand": "E-CLASS",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 50,
+    "attrs": {
+      "amps": 5,
+      "colour": "WHITE"
+    },
+    "popularity": 79
+  },
+  {
+    "sku": "SO-616-ECL",
+    "name": "E-CLASS WHITE 6/16A COMBINED SOCKET",
+    "brand": "E-CLASS",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 148,
+    "attrs": {
+      "amps": 16,
+      "combined": true,
+      "colour": "WHITE"
+    },
+    "popularity": 52
+  },
+  {
+    "sku": "SW-6-1W-ECL",
+    "name": "E-CLASS WHITE 6AMP 1WAY SWITCH",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 18,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 86
+  },
+  {
+    "sku": "SW-6-1WI-ECL",
+    "name": "E-CLASS WHITE 6AMP 1WAY SWITCH WITH INDICATER",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 42,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 50
+  },
+  {
+    "sku": "PT-6-2P-ECL",
+    "name": "E-CLASS WHITE 6AMP 2PIN PLUG TOP",
+    "brand": "E-CLASS",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 26,
+    "attrs": {
+      "amps": 6,
+      "pins": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 59
+  },
+  {
+    "sku": "SW-6-2W-ECL",
+    "name": "E-CLASS WHITE 6AMP 2WAY SWITCH",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 34,
+    "attrs": {
+      "amps": 6,
+      "ways": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 59
+  },
+  {
+    "sku": "PT-6-3P-ECL",
+    "name": "E-CLASS WHITE 6AMP 3PIN PLUG TOP",
+    "brand": "E-CLASS",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 38,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 67
+  },
+  {
+    "sku": "SO-6A-ECL",
+    "name": "E-CLASS WHITE 6AMP 3PIN SOCKET",
+    "brand": "E-CLASS",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 58,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 65
+  },
+  {
+    "sku": "SW-BELL-ECL",
+    "name": "E-CLASS WHITE 6AMP BELL PUSH SWITCH",
+    "brand": "E-CLASS",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 38,
+    "attrs": {
+      "amps": 6,
+      "type": "BELL_PUSH",
+      "colour": "WHITE"
+    },
+    "popularity": 32
+  },
+  {
+    "sku": "RG-DIM-ECL",
+    "name": "E-CLASS WHITE FAN REGULATOR DIMMER TYPE",
+    "brand": "E-CLASS",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 224,
+    "attrs": {
+      "type": "DIMMER",
+      "colour": "WHITE"
+    },
+    "popularity": 43
+  },
+  {
+    "sku": "RG-STEP-ECL",
+    "name": "E-CLASS WHITE FAN REGULATOR STEP TYPE",
+    "brand": "E-CLASS",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 168,
+    "attrs": {
+      "type": "STEP",
+      "colour": "WHITE"
+    },
+    "popularity": 68
+  },
+  {
+    "sku": "FB-ROUND",
+    "name": "FAN BOX ROUND METAL",
+    "brand": "GENERIC",
+    "category": "FAN_BOX",
+    "uom": "Nos",
+    "rate": 58,
+    "attrs": {
+      "shape": "ROUND"
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "WR-FIN-0.75",
+    "name": "FINOLEX 0.75 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 1580.8,
+    "attrs": {
+      "coreSqmm": 0.75,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "WR-FIN-1",
+    "name": "FINOLEX 1 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 2121.6,
+    "attrs": {
+      "coreSqmm": 1,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "WR-FIN-1.5",
+    "name": "FINOLEX 1.5 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 3099.2,
+    "attrs": {
+      "coreSqmm": 1.5,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "WR-FIN-2.5",
+    "name": "FINOLEX 2.5 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 5605.6,
+    "attrs": {
+      "coreSqmm": 2.5,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "WR-FIN-4",
+    "name": "FINOLEX 4 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 8476,
+    "attrs": {
+      "coreSqmm": 4,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "WR-FIN-6",
+    "name": "FINOLEX 6 SQ MM WIRE (RP)",
+    "brand": "FINOLEX",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 12376,
+    "attrs": {
+      "coreSqmm": 6,
+      "lengthMtr": 90
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "CP-GM-12x4",
+    "name": "GM 12x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 318,
+    "attrs": {
+      "sizeLabel": "12x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "CP-GM-16x4",
+    "name": "GM 16x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 402,
+    "attrs": {
+      "sizeLabel": "16x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "CP-GM-18x4",
+    "name": "GM 18x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 465,
+    "attrs": {
+      "sizeLabel": "18x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "CP-BLANK-1M",
+    "name": "GM 1M WHITE BLANK PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 22,
+    "attrs": {
+      "modules": 1,
+      "colour": "WHITE",
+      "blank": true
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "CP-GM-2x4",
+    "name": "GM 2x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 78,
+    "attrs": {
+      "sizeLabel": "2x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "RS-GM-35",
+    "name": "GM 3.5\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 32,
+    "attrs": {
+      "sizeInch": 3.5,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "RS-GM-3",
+    "name": "GM 3\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 26,
+    "attrs": {
+      "sizeInch": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "CP-GM-3x4",
+    "name": "GM 3x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 96,
+    "attrs": {
+      "sizeLabel": "3x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "RS-GM-45",
+    "name": "GM 4.5\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 46,
+    "attrs": {
+      "sizeInch": 4.5,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "RS-GM-4",
+    "name": "GM 4\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 38,
+    "attrs": {
+      "sizeInch": 4,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "CP-GM-4x4-IV",
+    "name": "GM 4x4 IVORY COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 118,
+    "attrs": {
+      "sizeLabel": "4x4",
+      "colour": "IVORY"
+    },
+    "popularity": 15
+  },
+  {
+    "sku": "CP-GM-4x4",
+    "name": "GM 4x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 118,
+    "attrs": {
+      "sizeLabel": "4x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "RS-GM-55",
+    "name": "GM 5.5\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 62,
+    "attrs": {
+      "sizeInch": 5.5,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "RS-GM-5",
+    "name": "GM 5\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 54,
+    "attrs": {
+      "sizeInch": 5,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "RS-GM-6",
+    "name": "GM 6\" ROUND SHEET WHITE",
+    "brand": "GM",
+    "category": "ROUND_SHEET",
+    "uom": "Nos",
+    "rate": 74,
+    "attrs": {
+      "sizeInch": 6,
+      "colour": "WHITE"
+    },
+    "popularity": 80
+  },
+  {
+    "sku": "CP-GM-6x4",
+    "name": "GM 6x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 176,
+    "attrs": {
+      "sizeLabel": "6x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "CP-GM-8x4",
+    "name": "GM 8x4 WHITE COVER PLATE",
+    "brand": "GM",
+    "category": "COVER_PLATE",
+    "uom": "Nos",
+    "rate": 232,
+    "attrs": {
+      "sizeLabel": "8x4",
+      "colour": "WHITE"
+    },
+    "popularity": 85
+  },
+  {
+    "sku": "SO-15A-GM",
+    "name": "GM WHITE 15A SOCKET",
+    "brand": "GM",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 314.9,
+    "attrs": {
+      "amps": 15,
+      "colour": "WHITE"
+    },
+    "popularity": 48
+  },
+  {
+    "sku": "PT-16-3P-GM",
+    "name": "GM WHITE 16A 3PIN PLUG TOP",
+    "brand": "GM",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 192.7,
+    "attrs": {
+      "amps": 16,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 36
+  },
+  {
+    "sku": "SW-20-1W-GM",
+    "name": "GM WHITE 20A 1WAY SWITCH",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 150.4,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 42
+  },
+  {
+    "sku": "SW-20-1WI-GM",
+    "name": "GM WHITE 20A 1WAY SWITCH WITH INDICATER",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 213.85,
+    "attrs": {
+      "amps": 20,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 41
+  },
+  {
+    "sku": "PT-20-3P-GM",
+    "name": "GM WHITE 20A 3PIN PLUG TOP",
+    "brand": "GM",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 225.6,
+    "attrs": {
+      "amps": 20,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "SO-20A-GM",
+    "name": "GM WHITE 20A SOCKET",
+    "brand": "GM",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 380.7,
+    "attrs": {
+      "amps": 20,
+      "colour": "WHITE"
+    },
+    "popularity": 37
+  },
+  {
+    "sku": "SW-32-DP-GM",
+    "name": "GM WHITE 32A DP AC SWITCH WITH INDICATER",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 437.1,
+    "attrs": {
+      "amps": 32,
+      "poles": "DP",
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "SO-5A-GM",
+    "name": "GM WHITE 5AMP SOCKET",
+    "brand": "GM",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 117.5,
+    "attrs": {
+      "amps": 5,
+      "colour": "WHITE"
+    },
+    "popularity": 53
+  },
+  {
+    "sku": "SO-616-GM",
+    "name": "GM WHITE 6/16A COMBINED SOCKET",
+    "brand": "GM",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 347.8,
+    "attrs": {
+      "amps": 16,
+      "combined": true,
+      "colour": "WHITE"
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "SW-6-1W-GM",
+    "name": "GM WHITE 6AMP 1WAY SWITCH",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 42.3,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "colour": "WHITE"
+    },
+    "popularity": 57
+  },
+  {
+    "sku": "SW-6-1WI-GM",
+    "name": "GM WHITE 6AMP 1WAY SWITCH WITH INDICATER",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 98.7,
+    "attrs": {
+      "amps": 6,
+      "ways": 1,
+      "indicator": true,
+      "colour": "WHITE"
+    },
+    "popularity": 33
+  },
+  {
+    "sku": "PT-6-2P-GM",
+    "name": "GM WHITE 6AMP 2PIN PLUG TOP",
+    "brand": "GM",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 61.1,
+    "attrs": {
+      "amps": 6,
+      "pins": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "SW-6-2W-GM",
+    "name": "GM WHITE 6AMP 2WAY SWITCH",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 79.9,
+    "attrs": {
+      "amps": 6,
+      "ways": 2,
+      "colour": "WHITE"
+    },
+    "popularity": 39
+  },
+  {
+    "sku": "PT-6-3P-GM",
+    "name": "GM WHITE 6AMP 3PIN PLUG TOP",
+    "brand": "GM",
+    "category": "PLUG_TOP",
+    "uom": "Nos",
+    "rate": 89.3,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 44
+  },
+  {
+    "sku": "SO-6A-GM",
+    "name": "GM WHITE 6AMP 3PIN SOCKET",
+    "brand": "GM",
+    "category": "SOCKET",
+    "uom": "Nos",
+    "rate": 136.3,
+    "attrs": {
+      "amps": 6,
+      "pins": 3,
+      "colour": "WHITE"
+    },
+    "popularity": 43
+  },
+  {
+    "sku": "SW-BELL-GM",
+    "name": "GM WHITE 6AMP BELL PUSH SWITCH",
+    "brand": "GM",
+    "category": "SWITCH",
+    "uom": "Nos",
+    "rate": 89.3,
+    "attrs": {
+      "amps": 6,
+      "type": "BELL_PUSH",
+      "colour": "WHITE"
+    },
+    "popularity": 21
+  },
+  {
+    "sku": "RG-DIM-GM",
+    "name": "GM WHITE FAN REGULATOR DIMMER TYPE",
+    "brand": "GM",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 526.4,
+    "attrs": {
+      "type": "DIMMER",
+      "colour": "WHITE"
+    },
+    "popularity": 29
+  },
+  {
+    "sku": "RG-STEP-GM",
+    "name": "GM WHITE FAN REGULATOR STEP TYPE",
+    "brand": "GM",
+    "category": "REGULATOR",
+    "uom": "Nos",
+    "rate": 394.8,
+    "attrs": {
+      "type": "STEP",
+      "colour": "WHITE"
+    },
+    "popularity": 46
+  },
+  {
+    "sku": "WR-HILLS-0.75",
+    "name": "HILLS 0.75 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 1290,
+    "attrs": {
+      "coreSqmm": 0.75,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "WR-HILLS-1",
+    "name": "HILLS 1 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 1767,
+    "attrs": {
+      "coreSqmm": 1,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "WR-HILLS-1.5",
+    "name": "HILLS 1.5 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 2610,
+    "attrs": {
+      "coreSqmm": 1.5,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "WR-HILLS-2.5",
+    "name": "HILLS 2.5 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 4862,
+    "attrs": {
+      "coreSqmm": 2.5,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "WR-HILLS-4",
+    "name": "HILLS 4 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 7420,
+    "attrs": {
+      "coreSqmm": 4,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "WR-HILLS-6",
+    "name": "HILLS 6 SQ MM WIRE (RP)",
+    "brand": "HILLS",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 10980,
+    "attrs": {
+      "coreSqmm": 6,
+      "lengthMtr": 90
+    },
+    "popularity": 95
+  },
+  {
+    "sku": "TESTER-LED",
+    "name": "LINE TESTER SCREWDRIVER",
+    "brand": "GENERIC",
+    "category": "TOOL",
+    "uom": "Nos",
+    "rate": 45,
+    "attrs": {},
+    "popularity": 30
+  },
+  {
+    "sku": "GB-MS-12M",
+    "name": "MS METAL GANG BOX 12M",
+    "brand": "GENERIC",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 210,
+    "attrs": {
+      "modules": 12,
+      "material": "METAL"
+    },
+    "popularity": 20
+  },
+  {
+    "sku": "GB-MS-8M",
+    "name": "MS METAL GANG BOX 8M",
+    "brand": "GENERIC",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 165,
+    "attrs": {
+      "modules": 8,
+      "material": "METAL"
+    },
+    "popularity": 20
+  },
+  {
+    "sku": "GB-MUSK-12M",
+    "name": "MUSK PVC GANG BOX 12M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 139,
+    "attrs": {
+      "modules": 12,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-16M",
+    "name": "MUSK PVC GANG BOX 16M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 198,
+    "attrs": {
+      "modules": 16,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-18M",
+    "name": "MUSK PVC GANG BOX 18M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 226,
+    "attrs": {
+      "modules": 18,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-1M",
+    "name": "MUSK PVC GANG BOX 1M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 34,
+    "attrs": {
+      "modules": 1,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-2M",
+    "name": "MUSK PVC GANG BOX 2M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 42,
+    "attrs": {
+      "modules": 2,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-3M",
+    "name": "MUSK PVC GANG BOX 3M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 76,
+    "attrs": {
+      "modules": 3,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-4M",
+    "name": "MUSK PVC GANG BOX 4M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 92,
+    "attrs": {
+      "modules": 4,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-6M",
+    "name": "MUSK PVC GANG BOX 6M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 109,
+    "attrs": {
+      "modules": 6,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "GB-MUSK-8M",
+    "name": "MUSK PVC GANG BOX 8M",
+    "brand": "MUSK",
+    "category": "GANG_BOX",
+    "uom": "Nos",
+    "rate": 128,
+    "attrs": {
+      "modules": 8,
+      "material": "PVC"
+    },
+    "popularity": 90
+  },
+  {
+    "sku": "HLD-PEND",
+    "name": "PENDANT HOLDER WHITE",
+    "brand": "GENERIC",
+    "category": "HOLDER",
+    "uom": "Nos",
+    "rate": 38,
+    "attrs": {
+      "type": "PENDANT"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "WR-POLY-0.75",
+    "name": "POLYCAB 0.75 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 1520,
+    "attrs": {
+      "coreSqmm": 0.75,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "WR-POLY-1",
+    "name": "POLYCAB 1 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 2040,
+    "attrs": {
+      "coreSqmm": 1,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "WR-POLY-1.5",
+    "name": "POLYCAB 1.5 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 2980,
+    "attrs": {
+      "coreSqmm": 1.5,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "WR-POLY-2.5",
+    "name": "POLYCAB 2.5 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 5390,
+    "attrs": {
+      "coreSqmm": 2.5,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "WR-POLY-4",
+    "name": "POLYCAB 4 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 8150,
+    "attrs": {
+      "coreSqmm": 4,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "WR-POLY-6",
+    "name": "POLYCAB 6 SQ MM WIRE (RP)",
+    "brand": "POLYCAB",
+    "category": "WIRE",
+    "uom": "COIL",
+    "rate": 11900,
+    "attrs": {
+      "coreSqmm": 6,
+      "lengthMtr": 90
+    },
+    "popularity": 60
+  },
+  {
+    "sku": "TP-SG-6",
+    "name": "STEELGRIP TAP ROLL (6MTR)",
+    "brand": "STEELGRIP",
+    "category": "TAPE",
+    "uom": "Nos",
+    "rate": 9,
+    "attrs": {
+      "lengthMtr": 6
+    },
+    "popularity": 45
+  },
+  {
+    "sku": "SD-BLACK",
+    "name": "SWITCH DOME BLACK",
+    "brand": "GENERIC",
+    "category": "SWITCH_DOME",
+    "uom": "Nos",
+    "rate": 4.5,
+    "attrs": {
+      "colour": "BLACK"
+    },
+    "popularity": 35
+  },
+  {
+    "sku": "SD-WHITE",
+    "name": "SWITCH DOME WHITE",
+    "brand": "GENERIC",
+    "category": "SWITCH_DOME",
+    "uom": "Nos",
+    "rate": 4.5,
+    "attrs": {
+      "colour": "WHITE"
+    },
+    "popularity": 78
+  },
+  {
+    "sku": "WR-VIR-2376",
+    "name": "VIR 23/76 LUSE WIRE",
+    "brand": "VIR",
+    "category": "FLEX_WIRE",
+    "uom": "METER",
+    "rate": 148,
+    "attrs": {
+      "strand": "23/76"
+    },
+    "popularity": 30
+  },
+  {
+    "sku": "WR-VIR-320",
+    "name": "VIR 3/20 LUSE WIRE",
+    "brand": "VIR",
+    "category": "FLEX_WIRE",
+    "uom": "METER",
+    "rate": 62,
+    "attrs": {
+      "strand": "3/20"
+    },
+    "popularity": 40
+  },
+  {
+    "sku": "WR-VIR-720",
+    "name": "VIR 7/20 LUSE WIRE -(7/.034)",
+    "brand": "VIR",
+    "category": "FLEX_WIRE",
+    "uom": "METER",
+    "rate": 104,
+    "attrs": {
+      "strand": "7/20"
+    },
+    "popularity": 70
+  },
+  {
+    "sku": "FAN-WALL-400",
+    "name": "WALL MOUNT FAN 400MM",
+    "brand": "CROMPTON",
+    "category": "FAN",
+    "uom": "Nos",
+    "rate": 2150,
+    "attrs": {
+      "sweepMm": 400,
+      "type": "WALL"
+    },
+    "popularity": 20
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "_comment": "Limras counter defaults. When a customer omits the brand, this is what gets quoted. Edit freely - this single table is the largest single driver of match accuracy.",
+  "brandByCategory": {
+    "GANG_BOX": "MUSK",
+    "COVER_PLATE": "GM",
+    "ROUND_SHEET": "GM",
+    "WIRE": "HILLS",
+    "FLEX_WIRE": "VIR",
+    "MCB": "LEGRAND",
+    "RCCB": "LEGRAND",
+    "DISTRIBUTION_BOX": "LEGRAND",
+    "SWITCH": "E-CLASS",
+    "SOCKET": "E-CLASS",
+    "PLUG_TOP": "E-CLASS",
+    "REGULATOR": "E-CLASS",
+    "TAPE": "3M",
+    "LED_BULB": "HAVELLS",
+    "LED_PANEL": "HAVELLS",
+    "LIGHT_FITTING": "HAVELLS",
+    "FAN": "CROMPTON",
+    "DOOR_BELL": "ANCHOR",
+    "EXTENSION_BOARD": "ANCHOR",
+    "TOOL": "TAPARIA"
+  },
+  "attrDefaults": {
+    "SWITCH": {
+      "ways": 1,
+      "colour": "WHITE",
+      "indicator": false,
+      "type": "STANDARD"
+    },
+    "SOCKET": {
+      "colour": "WHITE",
+      "pins": 3
+    },
+    "PLUG_TOP": {
+      "pins": 3
+    },
+    "SCREW": {
+      "head": "DRYWALL"
+    },
+    "BEND": {
+      "grade": 1.5
+    },
+    "JUNCTION_BOX": {
+      "ways": 3
+    },
+    "CEILING_ROSE": {
+      "plates": 2
+    },
+    "HOLDER": {
+      "type": "BATTEN",
+      "material": "PVC"
+    },
+    "SWITCH_DOME": {
+      "colour": "WHITE"
+    },
+    "REGULATOR": {
+      "type": "STEP"
+    }
+  },
+  "thresholds": {
+    "confirmed": 80,
+    "warn": 50,
+    "ambiguousGap": 12
+  },
+  "scoring": {
+    "categoryBase": 45,
+    "attrMatch": 14,
+    "attrMismatch": -40,
+    "brandExplicit": 22,
+    "brandDefault": 10,
+    "brandOther": -6,
+    "attrDefaultApplied": 4,
+    "popularityWeight": 0.08
+  }
+}

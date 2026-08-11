@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Limras Electricals Agency — Quotation Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mark">
+    <span class="mark-rule" aria-hidden="true"></span>
+    <div>
+      <h1>Limras Electricals Agency</h1>
+      <p class="mark-sub">Quotation desk · read the sheet, check the rail, print</p>
+    </div>
+  </div>
+  <div class="masthead-meta">
+    <span id="statusPill" class="pill pill-idle">Checking…</span>
+    <button id="btnNew" class="btn btn-ghost" type="button">Start over</button>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- ───────────────────────────────── source pane -->
+  <aside class="pane-source">
+    <section id="dropzone" class="dropzone" tabindex="0" role="button"
+             aria-label="Upload the customer's handwritten sheet">
+      <svg viewBox="0 0 48 48" class="dz-icon" aria-hidden="true">
+        <path d="M8 34V12a2 2 0 0 1 2-2h20l10 10v14a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2Z"/>
+        <path d="M30 10v10h10"/>
+        <path d="M18 28h12M18 22h6"/>
+      </svg>
+      <p class="dz-title">Drop the customer's sheet here</p>
+      <p class="dz-hint">Photo or scan · JPG, PNG, WEBP</p>
+      <input id="fileInput" type="file" accept="image/*" hidden />
+    </section>
+
+    <figure id="preview" class="preview" hidden>
+      <img id="previewImg" alt="The sheet being read" />
+      <figcaption>Check every amber and red row against this.</figcaption>
+    </figure>
+
+    <details class="typed">
+      <summary>Or type the list instead</summary>
+      <textarea id="typedText" rows="7" spellcheck="false"
+        placeholder="6 amps switch 78&#10;20 amps plug 9&#10;25x6 star screw 100"></textarea>
+      <button id="btnParseText" class="btn btn-solid btn-block" type="button">Read typed list</button>
+    </details>
+
+    <section class="legend" aria-label="Row status key">
+      <h2>Row status</h2>
+      <ul>
+        <li><i class="rail rail-confirmed"></i><b>Confirmed</b><span>Description named everything needed</span></li>
+        <li><i class="rail rail-assumed"></i><b>Assumed</b><span>Brand or size filled in from shop defaults</span></li>
+        <li><i class="rail rail-ambiguous"></i><b>Check this</b><span>Another item scores almost the same</span></li>
+        <li><i class="rail rail-unmatched"></i><b>No match</b><span>Nothing in the master fits — pick it manually</span></li>
+      </ul>
+      <p class="legend-note">Colours follow wiring code: earth, phase, live.</p>
+    </section>
+  </aside>
+
+  <!-- ───────────────────────────────── quotation pane -->
+  <section class="pane-quote">
+
+    <div id="emptyState" class="empty">
+      <p class="empty-lead">No sheet loaded.</p>
+      <p>Upload a photo and the lines land here priced, with anything uncertain flagged for you to confirm.</p>
+      <button id="btnSample" class="btn btn-solid" type="button">Load the sample sheet</button>
+    </div>
+
+    <div id="workspace" hidden>
+      <div class="quote-head">
+        <div class="field">
+          <label for="custName">Customer</label>
+          <input id="custName" type="text" placeholder="Walk-in customer" />
+        </div>
+        <div class="field">
+          <label for="salesman">Salesman</label>
+          <input id="salesman" type="text" value="DIRECT SMAN" />
+        </div>
+        <div id="attention" class="attention" hidden></div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="grid">
+          <thead>
+            <tr>
+              <th class="c-no">#</th>
+              <th class="c-desc">Item</th>
+              <th class="c-qty">Qty</th>
+              <th class="c-uom">UOM</th>
+              <th class="c-rate">Rate</th>
+              <th class="c-amt">Amount</th>
+              <th class="c-act"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="totals">
+        <div class="totals-left">
+          <button id="btnAddRow" class="btn btn-ghost" type="button">Add a line</button>
+          <label class="neg">
+            Agreed price
+            <input id="negotiated" type="number" step="0.01" placeholder="optional" />
+          </label>
+        </div>
+        <dl class="totals-figures">
+          <div><dt>Total</dt><dd id="tTotal">0.00</dd></div>
+          <div><dt>Rounded off</dt><dd id="tRound">0.00</dd></div>
+          <div class="grand"><dt>Payable</dt><dd id="tGrand">0.00</dd></div>
+        </dl>
+      </div>
+
+      <div class="actions">
+        <button id="btnSave" class="btn btn-solid" type="button">Save quotation</button>
+        <button id="btnPrint" class="btn btn-outline" type="button">Print</button>
+        <span id="saveMsg" class="save-msg" role="status"></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- item picker -->
+<div id="picker" class="picker" hidden>
+  <div class="picker-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+    <header>
+      <h2 id="pickerTitle">Pick the right item</h2>
+      <button id="pickerClose" class="btn btn-ghost" type="button">Close</button>
+    </header>
+    <p id="pickerRaw" class="picker-raw"></p>
+    <input id="pickerSearch" type="search" placeholder="Search the item master…" autocomplete="off" />
+    <ul id="pickerList" class="picker-list"></ul>
+  </div>
+</div>
+
+<!-- print-only document -->
+<section id="printDoc" class="print-doc" aria-hidden="true"></section>
+
+<script src="app.js"></script>
+</body>
+</html>
