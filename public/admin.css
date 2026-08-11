@@ -1,0 +1,77 @@
+/* Item Master admin — sits alongside styles.css, reuses its tokens. */
+
+.admin-shell {
+  max-width: 1180px; margin: 0 auto;
+  padding: var(--gap) 24px 48px;
+  display: grid; gap: 14px;
+}
+
+.admin-toolbar {
+  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.admin-toolbar #search {
+  flex: 1; min-width: 240px;
+  padding: 9px 12px; font-size: 14px;
+  border: 1px solid var(--rule); border-radius: 3px;
+  background: var(--panel); font-family: var(--f-body);
+}
+.admin-toolbar #search:focus { outline: 2px solid var(--phase-b); outline-offset: -1px; }
+
+.admin-grid {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 4px;
+}
+.admin-grid .num { text-align: right !important; }
+.admin-grid td { font-size: 13px; }
+.admin-grid .sku { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
+.admin-grid .rate, .admin-grid .pop { font-family: var(--f-mono); }
+
+.admin-row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.admin-row-actions button {
+  font-family: var(--f-body); font-size: 12px; font-weight: 500;
+  padding: 5px 10px; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+}
+.admin-row-actions button:hover { background: var(--panel-sunk); }
+.admin-row-actions .del:hover { border-color: var(--live); color: var(--live); background: var(--live-bg); }
+
+.admin-empty { color: var(--ink-soft); padding: 24px; text-align: center; }
+
+/* ── form modal ── */
+
+.admin-form-card { width: min(560px, 100%); max-height: 86vh; }
+.admin-form { padding: 16px; overflow-y: auto; display: grid; gap: 14px; }
+
+.admin-form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.admin-form-grid label:first-child, .admin-form-grid label:nth-child(2) {
+  grid-column: 1 / -1;
+}
+.admin-form label {
+  display: grid; gap: 5px;
+  font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.admin-form .hint { text-transform: none; letter-spacing: 0; font-family: var(--f-body); font-size: 11px; }
+.admin-form input, .admin-form textarea {
+  font-family: var(--f-body); font-size: 14px; padding: 8px 10px;
+  border: 1px solid var(--rule); border-radius: 3px; background: var(--panel-sunk);
+  color: var(--ink);
+}
+.admin-attrs textarea { font-family: var(--f-mono); font-size: 12.5px; resize: vertical; }
+.admin-form input:focus, .admin-form textarea:focus {
+  outline: 2px solid var(--phase-b); outline-offset: -1px;
+}
+
+.admin-form-error {
+  margin: 0; padding: 8px 10px; border-radius: 3px;
+  background: var(--live-bg); border: 1px solid #E3B4AF; color: var(--live);
+  font-size: 12.5px;
+}
+
+.admin-form-actions { display: flex; gap: 10px; }
+
+@media (max-width: 640px) {
+  .admin-form-grid { grid-template-columns: 1fr; }
+  .admin-form-grid label:nth-child(2) { grid-column: auto; }
+}

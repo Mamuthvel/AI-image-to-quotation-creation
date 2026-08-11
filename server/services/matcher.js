@@ -1,5 +1,5 @@
 'use strict';
-const items = require('../data/items.json');
+const { items } = require('./itemsStore');
 const defaults = require('../data/defaults.json');
 const { extractSpec } = require('./attributes');
 const { normalizeLines, expandDittos, applySpelling, foldFractions } = require('./normalize');

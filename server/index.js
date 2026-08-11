@@ -7,6 +7,7 @@ const path = require('path');
 
 const { extractFromImage } = require('./services/extract');
 const { matchExtractedLines, matchRawLines, searchItems, items } = require('./services/matcher');
+const itemsStore = require('./services/itemsStore');
 const learning = require('./services/learning');
 
 const app = express();
@@ -33,6 +34,32 @@ app.get('/api/health', (_req, res) => {
 
 app.get('/api/items', (req, res) => {
   res.json(searchItems(req.query.q, Number(req.query.limit) || 25));
+});
+
+/** Body: { sku, name, brand, category, uom, rate, attrs, popularity } */
+app.post('/api/items', (req, res) => {
+  try {
+    res.status(201).json(itemsStore.addItem(req.body || {}));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+/** Body: any subset of the same fields. */
+app.put('/api/items/:sku', (req, res) => {
+  try {
+    res.json(itemsStore.updateItem(req.params.sku, req.body || {}));
+  } catch (err) {
+    res.status(err.message.includes('not found') ? 404 : 400).json({ error: err.message });
+  }
+});
+
+app.delete('/api/items/:sku', (req, res) => {
+  try {
+    res.json(itemsStore.removeItem(req.params.sku));
+  } catch (err) {
+    res.status(404).json({ error: err.message });
+  }
 });
 
 /** Body: { image: "<base64>", mediaType: "image/jpeg" } */
