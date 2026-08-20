@@ -5,7 +5,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const { extractFromImage } = require('./services/extract');
+const { extractFromImage, extractFromAudio, extractFromVoiceText } = require('./services/extract');
 const { matchExtractedLines, matchRawLines, searchItems, items } = require('./services/matcher');
 const itemsStore = require('./services/itemsStore');
 const learning = require('./services/learning');
@@ -23,11 +23,17 @@ const readQuotes = () => {
 const writeQuotes = (q) => fs.writeFileSync(QUOTES, JSON.stringify(q, null, 2));
 
 app.get('/api/health', (_req, res) => {
+  const provider = process.env.VISION_PROVIDER || 'anthropic';
+  // Same key requirement now covers both paths: Gemini listens to voice
+  // directly, Anthropic structures a browser-transcribed script - either
+  // way it's the configured provider's own key that has to be set.
+  const providerReady = provider === 'gemini' ? !!process.env.GEMINI_API_KEY : !!process.env.ANTHROPIC_API_KEY;
   res.json({
     ok: true,
     items: items.length,
-    visionProvider: process.env.VISION_PROVIDER || 'anthropic',
-    visionReady: !!(process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY),
+    visionProvider: provider,
+    visionReady: providerReady,
+    voiceReady: providerReady,
     learnedAliases: Object.keys(learning.all()).length,
   });
 });
@@ -79,6 +85,51 @@ app.post('/api/extract', async (req, res) => {
     });
   } catch (err) {
     res.status(502).json({ error: `Could not read the sheet: ${err.message}` });
+  }
+});
+
+/** Body: { audio: "<base64>", mediaType: "audio/webm" } - always reads via Gemini. */
+app.post('/api/extract-voice', async (req, res) => {
+  try {
+    const { audio, mediaType } = req.body || {};
+    if (!audio) return res.status(400).json({ error: 'Record something to read.' });
+
+    // "SAMPLE" loads the bundled sheet without calling the vision model.
+    const result = audio === 'SAMPLE'
+      ? { provider: 'sample', note: 'Bundled sample sheet', lines: require('./data/sample-sheet.json').lines }
+      : await extractFromAudio(audio, mediaType || 'audio/webm');
+    res.json({
+      provider: result.provider,
+      note: result.note || null,
+      lines: matchExtractedLines(result.lines),
+    });
+  } catch (err) {
+    res.status(502).json({ error: `Could not read the recording: ${err.message}` });
+  }
+});
+
+/**
+ * Body: { text: "raw speech-to-text transcript" } - the Anthropic voice path.
+ * Anthropic's API can't listen to audio, so the browser's own speech
+ * recognition (see public/app.js) does the listening; this just structures
+ * the resulting transcript, same provider switch as /api/extract.
+ */
+app.post('/api/extract-voice-text', async (req, res) => {
+  try {
+    const text = String((req.body || {}).text || '').trim();
+    if (!text) return res.status(400).json({ error: 'Nothing was heard.' });
+
+    // "SAMPLE" loads the bundled sheet without calling the language model.
+    const result = text === 'SAMPLE'
+      ? { provider: 'sample', note: 'Bundled sample sheet', lines: require('./data/sample-sheet.json').lines }
+      : await extractFromVoiceText(text);
+    res.json({
+      provider: result.provider,
+      note: result.note || null,
+      lines: matchExtractedLines(result.lines),
+    });
+  } catch (err) {
+    res.status(502).json({ error: `Could not structure the recording: ${err.message}` });
   }
 });
 

@@ -17,15 +17,27 @@ let pickerRow = null;
 
 /* ───────────────────────────────────────────── data in */
 
-async function post(url, body) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Request failed');
-  return data;
+async function post(url, body, timeoutMs = 60000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error(`Timed out after ${Math.round(timeoutMs / 1000)}s — try a shorter recording, or check your connection.`);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function readFile(file) {
@@ -37,21 +49,36 @@ function readFile(file) {
   });
 }
 
-async function loadImage(file) {
+let pendingImage = null;
+
+async function showImagePreview(file) {
   const dataUrl = await readFile(file);
   $('previewImg').src = dataUrl;
   $('preview').hidden = false;
-  setStatus('Reading the sheet…', 'idle');
+  pendingImage = {
+    image: dataUrl.split(',')[1],
+    mediaType: (dataUrl.match(/^data:(.*?);/) || [])[1] || 'image/jpeg',
+  };
+  $('btnSubmitImage').disabled = false;
+  $('btnSubmitImage').textContent = 'Submit for reading';
+  setStatus('Photo ready — press Submit to read it', 'idle');
+}
 
-  const base64 = dataUrl.split(',')[1];
-  const mediaType = (dataUrl.match(/^data:(.*?);/) || [])[1] || 'image/jpeg';
+async function submitImage() {
+  if (!pendingImage) return;
+  $('btnSubmitImage').disabled = true;
+  $('btnSubmitImage').textContent = 'Reading…';
+  setStatus('Reading the sheet…', 'idle');
   try {
-    const out = await post('/api/extract', { image: base64, mediaType });
+    const out = await post('/api/extract', pendingImage);
     lines = out.lines;
     render();
-    setStatus(out.note ? 'Sample sheet' : `Read by ${out.provider}`, out.note ? 'idle' : 'live');
+    setStatus(out.note ? 'Sample sheet' : `Read by AI`, out.note ? 'idle' : 'live');
   } catch (err) {
     setStatus(err.message, 'idle');
+  } finally {
+    $('btnSubmitImage').disabled = false;
+    $('btnSubmitImage').textContent = 'Submit for reading';
   }
 }
 
@@ -67,6 +94,167 @@ async function loadTyped() {
   } catch (err) {
     setStatus(err.message, 'idle');
   }
+}
+
+/* ───────────────────────────────────────────── voice */
+
+// Gemini can listen to the actual recording (best accuracy for accented trade
+// speech). Anthropic's API can't accept audio at all, so when that's the
+// configured provider, the browser's own speech recognition does the
+// listening and we send it the resulting text instead. Set from /api/health.
+let visionProvider = 'anthropic';
+
+let pendingVoicePayload = null; // { type: 'audio', blob } | { type: 'text', text } - awaiting a merge/new-list choice
+
+/** Ticks the status line with elapsed seconds so a slow response doesn't read as a frozen page. */
+function startElapsedTicker(label) {
+  const start = Date.now();
+  $('recStatus').textContent = `${label}… 0s`;
+  const id = setInterval(() => {
+    $('recStatus').textContent = `${label}… ${Math.round((Date.now() - start) / 1000)}s`;
+  }, 1000);
+  return () => clearInterval(id);
+}
+
+async function fetchVoiceResult(payload) {
+  if (payload.type === 'audio') {
+    const base64 = await blobToBase64(payload.blob);
+    return post('/api/extract-voice', { audio: base64, mediaType: payload.blob.type || 'audio/webm' });
+  }
+  return post('/api/extract-voice-text', { text: payload.text });
+}
+
+async function runVoiceExtraction(payload, mode) {
+  $('voiceDestRow').hidden = true;
+  const stopTicker = startElapsedTicker(payload.type === 'audio' ? 'Reading the recording' : 'Structuring the list');
+  try {
+    const out = await fetchVoiceResult(payload);
+    lines = mode === 'merge' ? lines.concat(out.lines) : out.lines;
+    $('preview').hidden = true;
+    render();
+    setStatus(out.note ? 'Sample sheet (voice)' : `Read by AI Voice`, out.note ? 'idle' : 'live');
+    $('recStatus').textContent = out.note
+      || (mode === 'merge' ? `Merged ${out.lines.length} line${out.lines.length === 1 ? '' : 's'} in.` : 'Done — check the rows below.');
+  } catch (err) {
+    $('recStatus').textContent = err.message;
+  } finally {
+    stopTicker();
+    pendingVoicePayload = null;
+  }
+}
+
+/**
+ * Nothing loaded yet means there's nothing to merge into, so the very first
+ * recording in a session processes immediately, same as before. Once a list
+ * exists, a second recording asks first: merge in, or replace it.
+ */
+function finishRecording(payload) {
+  setRecordingUi(false);
+  if (lines.length === 0) {
+    runVoiceExtraction(payload, 'new');
+    return;
+  }
+  pendingVoicePayload = payload;
+  $('recStatus').textContent = 'Merge with the current list, or start a new one?';
+  $('voiceDestRow').hidden = false;
+}
+
+function setRecordingUi(isRecording) {
+  $('btnRecord').textContent = isRecording ? 'Stop recording' : 'Start recording';
+  $('btnRecord').classList.toggle('recording', isRecording);
+}
+
+/* -- Gemini: record audio, upload the clip -- */
+
+let mediaRecorder = null;
+let audioChunks = [];
+
+function pickAudioMimeType() {
+  const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
+  return candidates.find((t) => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || '';
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = () => reject(new Error('Could not read the recording'));
+    r.readAsDataURL(blob);
+  });
+}
+
+async function toggleGeminiRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+    return;
+  }
+  if (!navigator.mediaDevices || !window.MediaRecorder) {
+    $('recStatus').textContent = 'This browser cannot record audio.';
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mimeType = pickAudioMimeType();
+    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach((t) => t.stop());
+      const blob = new Blob(audioChunks, { type: mediaRecorder.mimeType || mimeType || 'audio/webm' });
+      finishRecording({ type: 'audio', blob });
+    };
+    mediaRecorder.start();
+    setRecordingUi(true);
+    $('recStatus').textContent = 'Listening…';
+  } catch (err) {
+    $('recStatus').textContent = `Microphone error: ${err.message}`;
+  }
+}
+
+/* -- Anthropic: browser transcribes speech, server structures the text -- */
+
+let recognition = null;
+
+function pickSpeechRecognition() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+
+function toggleAnthropicRecording() {
+  if (recognition) {
+    recognition.stop();
+    return;
+  }
+  const SpeechRecognition = pickSpeechRecognition();
+  if (!SpeechRecognition) {
+    $('recStatus').textContent = 'This browser cannot recognize speech - try Chrome or Edge.';
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  let transcript = '';
+  recognition.onresult = (e) => {
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) transcript += `${e.results[i][0].transcript} `;
+    }
+  };
+  recognition.onerror = (e) => { $('recStatus').textContent = `Speech recognition error: ${e.error}`; };
+  recognition.onend = () => {
+    recognition = null;
+    if (transcript.trim()) finishRecording({ type: 'text', text: transcript.trim() });
+    else { setRecordingUi(false); $('recStatus').textContent = 'Nothing heard — try again.'; }
+  };
+
+  recognition.start();
+  setRecordingUi(true);
+  $('recStatus').textContent = 'Listening…';
+}
+
+function toggleRecording() {
+  if (visionProvider === 'gemini') toggleGeminiRecording();
+  else toggleAnthropicRecording();
 }
 
 async function loadSample() {
@@ -127,7 +315,7 @@ function rowEl(l, i) {
     <td class="cell-uom">${l.uom || ''}</td>
     <td class="cell-rate"><input type="number" step="0.01" min="0" value="${l.rate}" data-act="rate" aria-label="Rate" /></td>
     <td class="cell-amt">${money(l.amount)}</td>
-    <td><button class="row-del" data-act="del" aria-label="Remove line ${i + 1}">&times;</button></td>
+    <td><button class="row-cancel" data-act="del" aria-label="Cancel line ${i + 1}">Cancel</button></td>
   `;
 
   tr.querySelector('[data-act="pick"]').addEventListener('click', () => openPicker(i));
@@ -330,19 +518,30 @@ dz.addEventListener('keydown', (e) => {
   dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove('over'); }));
 dz.addEventListener('drop', (e) => {
   const f = e.dataTransfer.files[0];
-  if (f) loadImage(f);
+  if (f) showImagePreview(f);
 });
 $('fileInput').addEventListener('change', (e) => {
-  if (e.target.files[0]) loadImage(e.target.files[0]);
+  if (e.target.files[0]) showImagePreview(e.target.files[0]);
 });
 
+$('btnSubmitImage').addEventListener('click', submitImage);
 $('btnParseText').addEventListener('click', loadTyped);
+$('btnRecord').addEventListener('click', toggleRecording);
+$('btnVoiceMerge').addEventListener('click', () => {
+  if (pendingVoicePayload) runVoiceExtraction(pendingVoicePayload, 'merge');
+});
+$('btnVoiceNewList').addEventListener('click', () => {
+  if (pendingVoicePayload) runVoiceExtraction(pendingVoicePayload, 'new');
+});
 $('btnSample').addEventListener('click', loadSample);
 $('btnSave').addEventListener('click', saveQuote);
 $('btnPrint').addEventListener('click', () => { buildPrintDoc(); window.print(); });
 $('btnNew').addEventListener('click', () => {
   lines = [];
+  pendingImage = null;
+  pendingVoicePayload = null;
   $('preview').hidden = true;
+  $('voiceDestRow').hidden = true;
   $('saveMsg').textContent = '';
   $('negotiated').value = '';
   render();
@@ -362,6 +561,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 fetch('/api/health').then((r) => r.json()).then((h) => {
+  visionProvider = h.visionProvider || 'anthropic';
   setStatus(h.visionReady ? `${h.items} items · vision live` : `${h.items} items · sample mode`,
     h.visionReady ? 'live' : 'idle');
 });
