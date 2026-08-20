@@ -5,12 +5,12 @@
     "brand": "GENERIC",
     "category": "BEND",
     "uom": "Nos",
-    "rate": 18,
+    "rate": 19.61,
     "attrs": {
       "sizeInch": 1.25,
       "grade": 1.5
     },
-    "popularity": 75
+    "popularity": 80
   },
   {
     "sku": "PIPE-125",
@@ -557,7 +557,7 @@
     "brand": "GENERIC",
     "category": "SADDLE",
     "uom": "Nos",
-    "rate": 2.1,
+    "rate": 20,
     "attrs": {
       "sizeMm": 25
     },

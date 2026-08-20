@@ -166,6 +166,7 @@ html, body {
 .preview figcaption {
   font-size: 12px; color: var(--ink-soft); margin-top: 7px;
 }
+.preview #btnSubmitImage { margin-top: 10px; }
 
 .typed {
   background: var(--panel); border: 1px solid var(--rule);
@@ -181,6 +182,14 @@ html, body {
   border: 1px solid var(--rule); border-radius: 3px; background: var(--panel-sunk);
   resize: vertical;
 }
+
+.voice-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+.voice-row .btn.recording { background: var(--live); }
+.voice-row .btn.recording:hover { background: #A82C23; }
+.voice-status { font-size: 12.5px; color: var(--ink-soft); }
+.voice-hint { margin: 8px 0 0; font-size: 11.5px; color: var(--ink-soft); }
+.voice-dest-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.voice-dest-row .btn { flex: 1; min-width: 140px; }
 
 /* ─────────────────────────────────────────────── legend */
 
@@ -264,7 +273,7 @@ html, body {
 .c-qty { width: 92px; }
 .c-uom { width: 66px; }
 .c-rate, .c-amt { width: 104px; text-align: right !important; }
-.c-act { width: 78px; }
+.c-act { width: 86px; }
 
 .grid tbody td {
   padding: 9px 10px; border-bottom: 1px solid var(--rule-soft);
@@ -327,11 +336,12 @@ tr[data-state="unmatched"] .reason { color: var(--live); }
 }
 .qty-clash { color: var(--live); }
 
-.row-del {
-  background: none; border: 0; cursor: pointer; color: var(--ink-soft);
-  font-size: 16px; line-height: 1; padding: 2px 6px; border-radius: 2px;
+.row-cancel {
+  font-family: var(--f-body); font-size: 11px; font-weight: 500;
+  white-space: nowrap; cursor: pointer; color: var(--ink-soft);
+  padding: 4px 8px; border-radius: 3px; border: 1px solid var(--rule); background: var(--panel);
 }
-.row-del:hover { color: var(--live); background: var(--live-bg); }
+.row-cancel:hover { color: var(--live); border-color: var(--live); background: var(--live-bg); }
 
 /* ─────────────────────────────────────────────── totals */
 

@@ -45,6 +45,7 @@
     <figure id="preview" class="preview" hidden>
       <img id="previewImg" alt="The sheet being read" />
       <figcaption>Check every amber and red row against this.</figcaption>
+      <button id="btnSubmitImage" class="btn btn-solid btn-block" type="button">Submit for reading</button>
     </figure>
 
     <details class="typed">
@@ -52,6 +53,19 @@
       <textarea id="typedText" rows="7" spellcheck="false"
         placeholder="6 amps switch 78&#10;20 amps plug 9&#10;25x6 star screw 100"></textarea>
       <button id="btnParseText" class="btn btn-solid btn-block" type="button">Read typed list</button>
+    </details>
+
+    <details class="typed">
+      <summary>Or read the list aloud</summary>
+      <div class="voice-row">
+        <button id="btnRecord" class="btn btn-solid" type="button">Start recording</button>
+        <span id="recStatus" class="voice-status" role="status"></span>
+      </div>
+      <div id="voiceDestRow" class="voice-dest-row" hidden>
+        <button id="btnVoiceMerge" class="btn btn-outline" type="button">Merge into existing list</button>
+        <button id="btnVoiceNewList" class="btn btn-ghost" type="button">Create a new list</button>
+      </div>
+      <p class="voice-hint">Read out each item and quantity, then stop the recording.</p>
     </details>
 
     <section class="legend" aria-label="Row status key">
