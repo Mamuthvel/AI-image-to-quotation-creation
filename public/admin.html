@@ -27,6 +27,11 @@
 </header>
 
 <main class="admin-shell">
+  <section class="price-panel">
+    <h2>Price categories <span class="hint">Global % off list price — applies to every item without its own override</span></h2>
+    <div id="priceCatRows" class="price-cat-rows"></div>
+  </section>
+
   <div class="admin-toolbar">
     <input id="search" type="search" placeholder="Search by name, SKU, brand or category…" autocomplete="off" />
     <button id="btnAdd" class="btn btn-solid" type="button">+ Add item</button>
@@ -41,7 +46,11 @@
           <th>Brand</th>
           <th>Category</th>
           <th>UOM</th>
-          <th class="num">Rate</th>
+          <th class="num">List Price</th>
+          <th class="num">Cost</th>
+          <th class="num">SP</th>
+          <th class="num">SSP</th>
+          <th class="num">SR</th>
           <th class="num">Popularity</th>
           <th><span class="sr-only">Actions</span></th>
         </tr>
@@ -76,7 +85,7 @@
         <label>UOM
           <input id="f-uom" type="text" value="Nos" autocomplete="off" />
         </label>
-        <label>Rate
+        <label>List Price
           <input id="f-rate" type="number" step="0.01" min="0" required />
         </label>
         <label>Popularity <span class="hint">0-100, higher wins ties</span>
@@ -87,6 +96,10 @@
         Attributes <span class="hint">JSON — e.g. {"sizeInch": 0.75, "grade": 1.5}</span>
         <textarea id="f-attrs" rows="4" spellcheck="false">{}</textarea>
       </label>
+      <div id="overridePanel" class="admin-overrides" hidden>
+        <p class="hint">Per-item price override — leave blank to use the global % for that category.</p>
+        <div id="overrideRows" class="price-cat-rows"></div>
+      </div>
       <datalist id="brandList"></datalist>
       <datalist id="categoryList"></datalist>
       <p id="formError" class="admin-form-error" role="alert" hidden></p>

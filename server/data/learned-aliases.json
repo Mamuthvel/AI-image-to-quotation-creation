@@ -18,5 +18,10 @@
     "sku": "BND-125",
     "hits": 1,
     "updatedAt": "2026-08-20T10:06:36.059Z"
+  },
+  "multicore 1 2 core": {
+    "sku": "KWC1117C2",
+    "hits": 1,
+    "updatedAt": "2026-08-21T12:08:28.209Z"
   }
 }
