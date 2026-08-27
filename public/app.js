@@ -14,6 +14,10 @@ const STATE_LABEL = {
 
 let lines = [];
 let pickerRow = null;
+let priceCategory = 'list';
+let priceCategories = [];
+let currentQuoteId = null;    // internal id, set on first save
+let currentDocNumber = null;  // linear number, set once the quote is issued
 
 /* ───────────────────────────────────────────── data in */
 
@@ -70,8 +74,9 @@ async function submitImage() {
   $('btnSubmitImage').textContent = 'Reading…';
   setStatus('Reading the sheet…', 'idle');
   try {
-    const out = await post('/api/extract', pendingImage);
+    const out = await post('/api/extract', { ...pendingImage, priceCategory });
     lines = out.lines;
+    resetQuoteIdentity();
     render();
     setStatus(out.note ? 'Sample sheet' : `Read by AI`, out.note ? 'idle' : 'live');
   } catch (err) {
@@ -86,8 +91,9 @@ async function loadTyped() {
   const text = $('typedText').value;
   if (!text.trim()) return;
   try {
-    const out = await post('/api/parse-text', { text });
+    const out = await post('/api/parse-text', { text, priceCategory });
     lines = out.lines;
+    resetQuoteIdentity();
     $('preview').hidden = true;
     render();
     setStatus('Read from typed list', 'live');
@@ -119,9 +125,9 @@ function startElapsedTicker(label) {
 async function fetchVoiceResult(payload) {
   if (payload.type === 'audio') {
     const base64 = await blobToBase64(payload.blob);
-    return post('/api/extract-voice', { audio: base64, mediaType: payload.blob.type || 'audio/webm' });
+    return post('/api/extract-voice', { audio: base64, mediaType: payload.blob.type || 'audio/webm', priceCategory });
   }
-  return post('/api/extract-voice-text', { text: payload.text });
+  return post('/api/extract-voice-text', { text: payload.text, priceCategory });
 }
 
 async function runVoiceExtraction(payload, mode) {
@@ -130,6 +136,7 @@ async function runVoiceExtraction(payload, mode) {
   try {
     const out = await fetchVoiceResult(payload);
     lines = mode === 'merge' ? lines.concat(out.lines) : out.lines;
+    if (mode !== 'merge') resetQuoteIdentity();
     $('preview').hidden = true;
     render();
     setStatus(out.note ? 'Sample sheet (voice)' : `Read by AI Voice`, out.note ? 'idle' : 'live');
@@ -260,8 +267,9 @@ function toggleRecording() {
 async function loadSample() {
   setStatus('Loading sample…', 'idle');
   try {
-    const out = await post('/api/extract', { image: 'SAMPLE', mediaType: 'image/jpeg' });
+    const out = await post('/api/extract', { image: 'SAMPLE', mediaType: 'image/jpeg', priceCategory });
     lines = out.lines;
+    resetQuoteIdentity();
     render();
     setStatus('Sample sheet', 'idle');
   } catch (err) {
@@ -304,18 +312,25 @@ function rowEl(l, i) {
   const qtyExpr = l.qtyExpression
     ? `<span class="qty-expr${l.qtyConflict ? ' qty-clash' : ''}">${l.qtyExpression}</span>` : '';
 
+  const cats = priceCategories.length ? priceCategories : [{ code: 'list', label: 'List' }];
+  l.priceCategory = l.priceCategory || priceCategory || cats[0].code;
+  const pcatOpts = cats
+    .map((c) => `<option value="${c.code}"${c.code === l.priceCategory ? ' selected' : ''}>${c.label}</option>`)
+    .join('');
+
   tr.innerHTML = `
     <td class="cell-no">${i + 1}</td>
-    <td>
+    <td class="cell-item">
       <button class="item-name${l.item ? '' : ' none'}" data-act="pick">${name}</button>${conf}
       <span class="raw">${l.rawText}${inherited}</span>
       ${reason}
     </td>
-    <td><input type="number" step="any" min="0" value="${l.qty}" data-act="qty" aria-label="Quantity" />${qtyExpr}</td>
-    <td class="cell-uom">${l.uom || ''}</td>
-    <td class="cell-rate"><input type="number" step="0.01" min="0" value="${l.rate}" data-act="rate" aria-label="Rate" /></td>
-    <td class="cell-amt">${money(l.amount)}</td>
-    <td><button class="row-cancel" data-act="del" aria-label="Cancel line ${i + 1}">Cancel</button></td>
+    <td class="cell-qty" data-label="Qty"><input type="number" step="any" min="0" value="${l.qty}" data-act="qty" aria-label="Quantity" />${qtyExpr}</td>
+    <td class="cell-uom" data-label="UOM">${l.uom || ''}</td>
+    <td class="cell-pcat" data-label="Price cat"><select data-act="pcat" aria-label="Price category for line ${i + 1}">${pcatOpts}</select></td>
+    <td class="cell-rate" data-label="Rate"><input type="number" step="0.01" min="0" value="${l.rate}" data-act="rate" aria-label="Rate" /></td>
+    <td class="cell-amt" data-label="Amount">${money(l.amount)}</td>
+    <td class="cell-act"><button class="row-cancel" data-act="del" aria-label="Cancel line ${i + 1}">Cancel</button></td>
   `;
 
   tr.querySelector('[data-act="pick"]').addEventListener('click', () => openPicker(i));
@@ -331,6 +346,16 @@ function rowEl(l, i) {
     lines[i].rate = Number(e.target.value) || 0;
     recalc(i);
   });
+  tr.querySelector('[data-act="pcat"]').addEventListener('change', (e) => {
+    const l2 = lines[i];
+    l2.priceCategory = e.target.value;
+    if (l2.item && l2.item.rates && l2.item.rates[l2.priceCategory] != null) {
+      l2.rate = l2.item.rates[l2.priceCategory];
+      const rateInput = tr.querySelector('[data-act="rate"]');
+      if (rateInput) rateInput.value = l2.rate;
+    }
+    recalc(i);
+  });
   return tr;
 }
 
@@ -340,6 +365,27 @@ function recalc(i) {
   const tr = $('rows').children[i];
   if (tr) tr.querySelector('.cell-amt').textContent = money(l.amount);
   renderTotals();
+}
+
+/** The global selector sets every row to one category and re-rates from cached rates, no re-fetch needed. Individual rows can still be changed afterwards. */
+function applyPriceCategory() {
+  lines.forEach((l) => {
+    l.priceCategory = priceCategory;
+    if (l.item && l.item.rates && l.item.rates[priceCategory] != null) {
+      l.rate = l.item.rates[priceCategory];
+      l.amount = Math.round(l.rate * l.qty * 100) / 100;
+    }
+  });
+  render();
+}
+
+async function loadPriceCategories() {
+  try {
+    const cats = await (await fetch('/api/price-categories')).json();
+    priceCategories = cats;
+    $('priceCategory').innerHTML = cats.map((c) => `<option value="${c.code}">${c.label}</option>`).join('');
+    priceCategory = cats[0] ? cats[0].code : 'list';
+  } catch { /* select stays empty; rates fall back to server default */ }
 }
 
 function renderTotals() {
@@ -390,13 +436,15 @@ function drawPickerList(items) {
     ul.innerHTML = '<li><button type="button" disabled>Nothing matches that search.</button></li>';
     return;
   }
+  const pc = (pickerRow != null && lines[pickerRow] && lines[pickerRow].priceCategory) || priceCategory;
   for (const it of items) {
     const li = document.createElement('li');
     const conf = it.confidence != null ? `<span class="p-conf">${it.confidence}%</span>` : '';
+    const rate = it.rates && it.rates[pc] != null ? it.rates[pc] : it.rate;
     li.innerHTML = `
       <button type="button">
         <span>${it.name}<span class="p-sku">${it.sku} · ${it.brand}</span></span>
-        <span class="p-rate">${money(it.rate)} / ${it.uom} ${conf}</span>
+        <span class="p-rate">${money(rate)} / ${it.uom} ${conf}</span>
       </button>`;
     li.querySelector('button').addEventListener('click', () => choose(it));
     ul.appendChild(li);
@@ -405,14 +453,15 @@ function drawPickerList(items) {
 
 async function choose(item) {
   const l = lines[pickerRow];
-  l.item = { sku: item.sku, name: item.name, brand: item.brand };
-  l.rate = item.rate;
+  const pc = l.priceCategory || priceCategory;
+  l.item = item;
+  l.rate = item.rates && item.rates[pc] != null ? item.rates[pc] : item.rate;
   l.uom = item.uom;
   l.state = 'confirmed';
   l.reasons = [];
   l.confidence = 100;
   l.source = 'manual';
-  l.amount = Math.round(item.rate * l.qty * 100) / 100;
+  l.amount = Math.round(l.rate * l.qty * 100) / 100;
   closePicker();
   render();
   try { await post('/api/learn', { text: l.description, sku: item.sku }); } catch { /* non-blocking */ }
@@ -483,23 +532,65 @@ function buildPrintDoc() {
     <p class="p-valid">Quotation Valid for One Week Only</p>`;
 }
 
-async function saveQuote() {
+/** A freshly-read sheet is a new quotation - forget any prior draft/number. */
+function resetQuoteIdentity() {
+  currentQuoteId = null;
+  currentDocNumber = null;
+  $('btnPrint').textContent = 'Print';
+  $('saveMsg').textContent = '';
+}
+
+function quotePayload() {
   const total = lines.reduce((s, l) => s + Number(l.amount || 0), 0);
   const grand = Math.round(total);
+  return {
+    id: currentQuoteId,
+    customer: $('custName').value || 'QUOTATION',
+    salesman: $('salesman').value,
+    lines: lines.map((l) => ({
+      rawText: l.rawText, description: l.description,
+      sku: l.item ? l.item.sku : null, name: l.item ? l.item.name : null,
+      qtyExpression: l.qtyExpression, qty: l.qty, uom: l.uom,
+      rate: l.rate, amount: l.amount, state: l.state, source: l.source,
+      priceCategory: l.priceCategory || priceCategory,
+    })),
+    total, roundOff: grand - total, grandTotal: grand,
+    negotiatedTotal: Number($('negotiated').value) || null,
+    priceCategory,
+  };
+}
+
+/** Save persists a draft (or updates the current one). No number is issued yet. */
+async function saveQuote() {
+  if (currentDocNumber != null) {
+    $('saveMsg').textContent = `Quotation ${currentDocNumber} is already issued. Start over for a new one.`;
+    return;
+  }
   try {
-    const q = await post('/api/quotations', {
-      customer: $('custName').value || 'QUOTATION',
-      salesman: $('salesman').value,
-      lines: lines.map((l) => ({
-        rawText: l.rawText, description: l.description,
-        sku: l.item ? l.item.sku : null, name: l.item ? l.item.name : null,
-        qtyExpression: l.qtyExpression, qty: l.qty, uom: l.uom,
-        rate: l.rate, amount: l.amount, state: l.state, source: l.source,
-      })),
-      total, roundOff: grand - total, grandTotal: grand,
-      negotiatedTotal: Number($('negotiated').value) || null,
-    });
-    $('saveMsg').textContent = `Saved as quotation ${q.number}.`;
+    const q = await post('/api/quotations', quotePayload());
+    currentQuoteId = q.id;
+    $('saveMsg').textContent = `Saved as draft (not yet numbered). Print to issue a number.`;
+  } catch (err) {
+    $('saveMsg').textContent = err.message;
+  }
+}
+
+/**
+ * Print = issue. Persists the latest edits, mints the linear number once (the
+ * server does this atomically), then opens the archived numbered PDF - which is
+ * what prints, on desktop or mobile. Re-printing reuses the same number.
+ */
+async function issueAndPrint() {
+  try {
+    if (currentDocNumber == null) {
+      const saved = await post('/api/quotations', quotePayload());
+      currentQuoteId = saved.id;
+      const issued = await post(`/api/quotations/${currentQuoteId}/issue`, {});
+      currentDocNumber = issued.docNumber;
+      $('saveMsg').textContent = `Issued as quotation ${currentDocNumber}.`;
+      $('btnPrint').textContent = `Reprint ${currentDocNumber}`;
+    }
+    window.open(`/api/quotations/${currentQuoteId}/pdf`, '_blank');
   } catch (err) {
     $('saveMsg').textContent = err.message;
   }
@@ -535,11 +626,14 @@ $('btnVoiceNewList').addEventListener('click', () => {
 });
 $('btnSample').addEventListener('click', loadSample);
 $('btnSave').addEventListener('click', saveQuote);
-$('btnPrint').addEventListener('click', () => { buildPrintDoc(); window.print(); });
+$('btnPrint').addEventListener('click', issueAndPrint);
 $('btnNew').addEventListener('click', () => {
   lines = [];
   pendingImage = null;
   pendingVoicePayload = null;
+  currentQuoteId = null;
+  currentDocNumber = null;
+  $('btnPrint').textContent = 'Print';
   $('preview').hidden = true;
   $('voiceDestRow').hidden = true;
   $('saveMsg').textContent = '';
@@ -560,10 +654,16 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !$('picker').hidden) closePicker();
 });
 
+$('priceCategory').addEventListener('change', (e) => {
+  priceCategory = e.target.value;
+  applyPriceCategory();
+});
+
 fetch('/api/health').then((r) => r.json()).then((h) => {
   visionProvider = h.visionProvider || 'anthropic';
   setStatus(h.visionReady ? `${h.items} items · vision live` : `${h.items} items · sample mode`,
     h.visionReady ? 'live' : 'idle');
 });
 
+loadPriceCategories();
 render();

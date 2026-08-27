@@ -1,5 +1,10 @@
 {
   "_comment": "Limras counter defaults. When a customer omits the brand, this is what gets quoted. Edit freely - this single table is the largest single driver of match accuracy.",
+  "_categoryFallback": "When a customer uses a generic family word ('wire', 'coil') that this catalogue splits into sub-types, route it to the shop's house default. Left-hand side is the family category from aliases.categoryTerms; right-hand side must be a category that actually holds stock. Delete an entry once a catalogue carries stock under the family name itself.",
+  "categoryFallback": {
+    "WIRE": "FR",
+    "FLEX_WIRE": "FR"
+  },
   "brandByCategory": {
     "GANG_BOX": "MUSK",
     "COVER_PLATE": "GM",
@@ -20,7 +25,21 @@
     "FAN": "CROMPTON",
     "DOOR_BELL": "ANCHOR",
     "EXTENSION_BOARD": "ANCHOR",
-    "TOOL": "TAPARIA"
+    "TOOL": "TAPARIA",
+    "FR": "KUNDAN CAB",
+    "FR_LSH": "KUNDAN CAB",
+    "PFFR": "KUNDAN CAB",
+    "VIR_CU": "KUNDAN CAB",
+    "VIR_AL": "KUNDAN CAB",
+    "CTS_CU": "KUNDAN CAB",
+    "CTS_AL": "KUNDAN CAB",
+    "TWIN_AL": "KUNDAN CAB",
+    "WP_AL": "KUNDAN CAB",
+    "SUBMERSIBLE": "KUNDAN CAB",
+    "TF_TP": "KUNDAN CAB",
+    "SPEAKER": "KUNDAN CAB",
+    "SINGLE_CORE": "KUNDAN CAB",
+    "MULTICORE": "KUNDAN CAB"
   },
   "attrDefaults": {
     "SWITCH": {
@@ -68,6 +87,7 @@
     "categoryBase": 45,
     "attrMatch": 14,
     "attrMismatch": -40,
+    "lengthMismatch": -8,
     "brandExplicit": 22,
     "brandDefault": 10,
     "brandOther": -6,

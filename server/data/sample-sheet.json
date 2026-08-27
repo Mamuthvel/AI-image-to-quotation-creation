@@ -1,25 +1,15 @@
 {
-  "_comment": "Transcription of the customer sheet supplied by Limras. Ditto marks and phonetic spellings are preserved on purpose - they exercise the normalizer.",
+  "_comment": "Sample customer sheet against the real Kundan Cab catalogue (LP-1037). Exercises category phrases, sqmm/strand/core matching, and phonetic spelling repair.",
   "lines": [
-    { "raw": "5½\" Rownd Shet", "qty_expression": "2+1+2+5+2", "qty": 12, "stated_qty": 12, "confidence": 0.9 },
-    { "raw": "3½\" Round Sheet", "qty_expression": "3+2+1+3+1+2", "qty": 12, "stated_qty": 13, "confidence": 0.8 },
-    { "raw": "Sai older", "qty_expression": "2+2+1+1+2+2+2", "qty": 12, "stated_qty": 12, "confidence": 0.7 },
-    { "raw": "cerling roje", "qty_expression": "1+1+4+2", "qty": 8, "stated_qty": 8, "confidence": 0.85 },
-    { "raw": "4x4 Gm white shet", "qty_expression": "1+1", "qty": 2, "stated_qty": 2, "confidence": 0.9 },
-    { "raw": "8x4 Gm white sheet", "qty_expression": null, "qty": 1, "stated_qty": 1, "confidence": 0.9 },
-    { "raw": "6x4 Gm whit sheet", "qty_expression": "1+2+1", "qty": 4, "stated_qty": 4, "confidence": 0.9 },
-    { "raw": "19x6 star screw", "qty_expression": null, "qty": 150, "stated_qty": null, "confidence": 0.95 },
-    { "raw": "25x6 \"", "qty_expression": null, "qty": 100, "stated_qty": null, "confidence": 0.8 },
-    { "raw": "35x6 \"", "qty_expression": null, "qty": 50, "stated_qty": null, "confidence": 0.8 },
-    { "raw": "50x6 \"", "qty_expression": null, "qty": 25, "stated_qty": null, "confidence": 0.8 },
-    { "raw": "6 Amps 2by2 switan", "qty_expression": null, "qty": 14, "stated_qty": null, "confidence": 0.85 },
-    { "raw": "6 Amps switcn", "qty_expression": null, "qty": 78, "stated_qty": null, "confidence": 0.9 },
-    { "raw": "6 Amps plugo", "qty_expression": null, "qty": 25, "stated_qty": null, "confidence": 0.9 },
-    { "raw": "20 Amps switan", "qty_expression": null, "qty": 9, "stated_qty": null, "confidence": 0.9 },
-    { "raw": "20 Amps pluge", "qty_expression": null, "qty": 9, "stated_qty": null, "confidence": 0.9 },
-    { "raw": "Regulater", "qty_expression": null, "qty": 9, "stated_qty": null, "confidence": 0.95 },
-    { "raw": "AC switan 32 Amps", "qty_expression": null, "qty": 2, "stated_qty": null, "confidence": 0.85 },
-    { "raw": "6x4 wood kum cigut", "qty_expression": null, "qty": 2, "stated_qty": null, "confidence": 0.6 },
-    { "raw": "Switan domy", "qty_expression": null, "qty": 50, "stated_qty": null, "confidence": 0.75 }
+    { "raw": "1.5 sqmm fr wire", "qty_expression": null, "qty": 12, "stated_qty": null, "confidence": 0.9 },
+    { "raw": "2.5 sqmm fr wire", "qty_expression": null, "qty": 8, "stated_qty": null, "confidence": 0.9 },
+    { "raw": "1.0 sqmm fr-lsh wire", "qty_expression": null, "qty": 5, "stated_qty": null, "confidence": 0.85 },
+    { "raw": "4 sqmm pffr wire", "qty_expression": "1+1+1", "qty": 3, "stated_qty": 3, "confidence": 0.9 },
+    { "raw": "6 sqmm vir copper wire", "qty_expression": null, "qty": 2, "stated_qty": null, "confidence": 0.8 },
+    { "raw": "4 sqmm cts wire", "qty_expression": null, "qty": 4, "stated_qty": null, "confidence": 0.9 },
+    { "raw": "2.5 sqmm 4 core multicore cable", "qty_expression": null, "qty": 2, "stated_qty": null, "confidence": 0.9 },
+    { "raw": "1.5 sqmm 3 core submersible cable", "qty_expression": null, "qty": 1, "stated_qty": null, "confidence": 0.75 },
+    { "raw": "0.75 sqmm speaker wier", "qty_expression": null, "qty": 6, "stated_qty": null, "confidence": 0.7 },
+    { "raw": "1.5 sqmm single core wire", "qty_expression": null, "qty": 10, "stated_qty": null, "confidence": 0.9 }
   ]
 }

@@ -28,12 +28,29 @@ function stripDittoMarks(line) {
   return { text: out.replace(/\s{2,}/g, ' ').trim(), hadDitto };
 }
 
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Short acronym-style terms (fr, cts, vir - 3 letters or fewer) must land on a
+ * standalone word, or "fr" would light up inside "from". Longer terms stay a
+ * plain substring check so a typo/truncation like "alumini" still finds
+ * "aluminium".
+ */
+function termMatches(low, term) {
+  if (term.length <= 3 && /^[a-z0-9]+$/.test(term)) {
+    return new RegExp(`\\b${escapeRegex(term)}\\b`).test(low);
+  }
+  return low.includes(term);
+}
+
 function detectCategoryPhrase(text) {
   const low = text.toLowerCase();
   let best = null;
   for (const [cat, terms] of Object.entries(aliases.categoryTerms)) {
     for (const t of terms) {
-      if (low.includes(t) && (!best || t.length > best.term.length)) best = { category: cat, term: t };
+      if (termMatches(low, t) && (!best || t.length > best.term.length)) best = { category: cat, term: t };
     }
   }
   return best;
@@ -108,9 +125,12 @@ function parseQuantity(text) {
   return { expression: null, qty: stated, stated, text: body.trim() };
 }
 
-/** Strip the leading "1)" / "12." list marker. */
+/**
+ * Strip the leading "1)" / "12." list marker. The period case needs a lookahead
+ * so "1.5 sqmm..." (a decimal size, not a list marker) is left alone.
+ */
 function stripListMarker(line) {
-  return line.replace(/^\s*\(?\d{1,2}\s*[).\-:]\s*/, '').trim();
+  return line.replace(/^\s*\(?\d{1,2}\s*(?:\)|-|:|\.(?!\d))\s*/, '').trim();
 }
 
 function normalizeLines(rawLines) {

@@ -244,10 +244,10 @@ html, body {
   font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .09em;
   text-transform: uppercase; color: var(--ink-soft);
 }
-.field input {
+.field input, .field select {
   font-family: var(--f-body); font-size: 14px; padding: 6px 8px;
   border: 1px solid var(--rule); border-radius: 3px; min-width: 190px;
-  background: var(--panel-sunk);
+  background: var(--panel-sunk); color: var(--ink);
 }
 
 .attention {
@@ -272,6 +272,7 @@ html, body {
 .c-no  { width: 40px; }
 .c-qty { width: 92px; }
 .c-uom { width: 66px; }
+.c-pcat { width: 84px; }
 .c-rate, .c-amt { width: 104px; text-align: right !important; }
 .c-act { width: 86px; }
 
@@ -329,6 +330,12 @@ tr[data-state="unmatched"] .reason { color: var(--live); }
 .cell-rate input, .cell-amt { text-align: right; }
 .cell-amt { font-family: var(--f-mono); font-weight: 500; }
 .cell-uom { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
+.cell-pcat select {
+  width: 100%; font-family: var(--f-mono); font-size: 12px;
+  padding: 4px 4px; border: 1px solid var(--rule-soft);
+  border-radius: 2px; background: var(--panel); color: var(--ink);
+}
+.cell-pcat select:focus { outline: 2px solid var(--phase-b); outline-offset: -1px; }
 
 .qty-expr {
   display: block; font-family: var(--f-mono); font-size: 10.5px;
@@ -471,6 +478,76 @@ tr[data-state="unmatched"] .reason { color: var(--live); }
   .grid { font-size: 12.5px; }
   .totals { flex-direction: column; align-items: stretch; }
   .totals-figures { min-width: 0; }
+}
+
+/* Phones: the 8-column grid can't fit, so each line becomes a stacked card
+   with labelled fields. Bigger tap targets, 16px inputs (stops iOS zoom), and
+   a sticky Save bar so the running total and actions are always in reach. */
+@media (max-width: 640px) {
+  .shell { padding: 8px; gap: 12px; }
+  .quote-head { padding: 12px; gap: 12px; }
+  .field input, .field select { min-width: 0; width: 100%; font-size: 16px; }
+  .attention { margin-left: 0; }
+
+  .table-wrap { overflow-x: visible; }
+  .grid, .grid tbody, .grid tbody tr, .grid tbody td { display: block; width: 100%; }
+  .grid thead { display: none; }
+  .grid tbody tr {
+    position: relative; margin: 10px 0; padding: 10px 12px 12px;
+    border: 1px solid var(--rule); border-radius: 6px; background: var(--panel);
+  }
+  .grid tbody td:first-child { border-left: 0; }
+  .grid tbody tr[data-state="confirmed"] { border-left: 5px solid var(--earth); }
+  .grid tbody tr[data-state="assumed"]   { border-left: 5px solid var(--phase-b); }
+  .grid tbody tr[data-state="ambiguous"],
+  .grid tbody tr[data-state="low"]       { border-left: 5px solid var(--phase-y); }
+  .grid tbody tr[data-state="unmatched"] { border-left: 5px solid var(--live); }
+
+  .grid tbody td { border: 0; padding: 0; }
+  .cell-no {
+    position: absolute; top: 8px; right: 10px;
+    font-family: var(--f-mono); font-size: 11px; color: var(--ink-soft);
+  }
+  .cell-no::before { content: "#"; }
+  .cell-item { margin-bottom: 8px; padding-right: 28px !important; }
+  .item-name { font-size: 15px; }
+
+  .grid tbody td.cell-qty, .grid tbody td.cell-uom, .grid tbody td.cell-pcat,
+  .grid tbody td.cell-rate, .grid tbody td.cell-amt {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 7px 0 !important; border-top: 1px solid var(--rule-soft) !important;
+  }
+  .cell-qty::before, .cell-uom::before, .cell-pcat::before,
+  .cell-rate::before, .cell-amt::before {
+    content: attr(data-label);
+    font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--ink-soft); flex: 0 0 auto;
+  }
+  .grid .cell-qty input[type="number"],
+  .grid .cell-rate input[type="number"],
+  .grid .cell-pcat select {
+    width: auto; max-width: 62%; font-size: 16px; min-height: 40px; text-align: right;
+  }
+  .cell-uom { color: var(--ink-soft); text-align: right; }
+  .cell-amt { font-size: 15px; font-weight: 600; }
+  .cell-act { padding-top: 10px !important; }
+  .cell-act .row-cancel { width: 100%; min-height: 40px; }
+
+  .totals { padding: 12px; }
+  .totals-left, .totals-figures { width: 100%; min-width: 0; }
+  .neg, .neg input { width: 100%; }
+  .actions {
+    position: sticky; bottom: 0; z-index: 5; margin-top: 4px;
+    padding: 10px 12px; background: var(--panel);
+    border-top: 1px solid var(--rule); box-shadow: 0 -4px 14px rgba(20, 24, 27, .06);
+  }
+  .actions .btn { flex: 1; min-height: 46px; font-size: 15px; }
+  .save-msg { flex-basis: 100%; }
+
+  .picker { padding: 0; place-items: stretch; }
+  .picker-card { width: 100%; height: 100%; max-height: 100vh; border-radius: 0; }
+  #pickerSearch { font-size: 16px; min-height: 44px; }
+  .picker-list button { padding: 12px 10px; min-height: 48px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

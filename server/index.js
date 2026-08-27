@@ -9,18 +9,15 @@ const { extractFromImage, extractFromAudio, extractFromVoiceText } = require('./
 const { matchExtractedLines, matchRawLines, searchItems, items } = require('./services/matcher');
 const itemsStore = require('./services/itemsStore');
 const learning = require('./services/learning');
+const pricing = require('./services/pricing');
+const quotations = require('./services/quotations-store');
+const quotationPdf = require('./services/quotation-pdf');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const QUOTES = path.join(__dirname, 'data', 'quotations.json');
 
 app.use(express.json({ limit: '20mb' }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
-
-const readQuotes = () => {
-  try { return JSON.parse(fs.readFileSync(QUOTES, 'utf8')); } catch { return []; }
-};
-const writeQuotes = (q) => fs.writeFileSync(QUOTES, JSON.stringify(q, null, 2));
 
 app.get('/api/health', (_req, res) => {
   const provider = process.env.VISION_PROVIDER || 'anthropic';
@@ -42,10 +39,45 @@ app.get('/api/items', (req, res) => {
   res.json(searchItems(req.query.q, Number(req.query.limit) || 25));
 });
 
-/** Body: { sku, name, brand, category, uom, rate, attrs, popularity } */
+app.get('/api/price-categories', (_req, res) => {
+  res.json(pricing.listCategories());
+});
+
+/** Body: { discountPct } - changes the global % for this category, applied to every item that has no override. */
+app.put('/api/price-categories/:code', (req, res) => {
+  try {
+    pricing.setCategoryDiscount(req.params.code, req.body.discountPct);
+    res.json(pricing.listCategories());
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+/** Body: { discountPct } or { fixedPrice } - overrides one item's price in one category. */
+app.put('/api/items/:sku/overrides/:code', (req, res) => {
+  try {
+    pricing.setOverride(req.params.sku, req.params.code, req.body || {});
+    const item = items.find((i) => i.sku === req.params.sku);
+    res.json(pricing.decorate(item));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete('/api/items/:sku/overrides/:code', (req, res) => {
+  try {
+    pricing.clearOverride(req.params.sku, req.params.code);
+    const item = items.find((i) => i.sku === req.params.sku);
+    res.json(pricing.decorate(item));
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+/** Body: { sku, name, brand, category, uom, listPrice, attrs, popularity } */
 app.post('/api/items', (req, res) => {
   try {
-    res.status(201).json(itemsStore.addItem(req.body || {}));
+    res.status(201).json(pricing.decorate(itemsStore.addItem(req.body || {})));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -54,7 +86,7 @@ app.post('/api/items', (req, res) => {
 /** Body: any subset of the same fields. */
 app.put('/api/items/:sku', (req, res) => {
   try {
-    res.json(itemsStore.updateItem(req.params.sku, req.body || {}));
+    res.json(pricing.decorate(itemsStore.updateItem(req.params.sku, req.body || {})));
   } catch (err) {
     res.status(err.message.includes('not found') ? 404 : 400).json({ error: err.message });
   }
@@ -71,7 +103,7 @@ app.delete('/api/items/:sku', (req, res) => {
 /** Body: { image: "<base64>", mediaType: "image/jpeg" } */
 app.post('/api/extract', async (req, res) => {
   try {
-    const { image, mediaType } = req.body || {};
+    const { image, mediaType, priceCategory } = req.body || {};
     if (!image) return res.status(400).json({ error: 'Attach an image to read.' });
 
     // "SAMPLE" loads the bundled sheet without calling the vision model.
@@ -81,7 +113,7 @@ app.post('/api/extract', async (req, res) => {
     res.json({
       provider: result.provider,
       note: result.note || null,
-      lines: matchExtractedLines(result.lines),
+      lines: matchExtractedLines(result.lines, priceCategory),
     });
   } catch (err) {
     res.status(502).json({ error: `Could not read the sheet: ${err.message}` });
@@ -91,7 +123,7 @@ app.post('/api/extract', async (req, res) => {
 /** Body: { audio: "<base64>", mediaType: "audio/webm" } - always reads via Gemini. */
 app.post('/api/extract-voice', async (req, res) => {
   try {
-    const { audio, mediaType } = req.body || {};
+    const { audio, mediaType, priceCategory } = req.body || {};
     if (!audio) return res.status(400).json({ error: 'Record something to read.' });
 
     // "SAMPLE" loads the bundled sheet without calling the vision model.
@@ -101,7 +133,7 @@ app.post('/api/extract-voice', async (req, res) => {
     res.json({
       provider: result.provider,
       note: result.note || null,
-      lines: matchExtractedLines(result.lines),
+      lines: matchExtractedLines(result.lines, priceCategory),
     });
   } catch (err) {
     res.status(502).json({ error: `Could not read the recording: ${err.message}` });
@@ -117,6 +149,7 @@ app.post('/api/extract-voice', async (req, res) => {
 app.post('/api/extract-voice-text', async (req, res) => {
   try {
     const text = String((req.body || {}).text || '').trim();
+    const priceCategory = (req.body || {}).priceCategory;
     if (!text) return res.status(400).json({ error: 'Nothing was heard.' });
 
     // "SAMPLE" loads the bundled sheet without calling the language model.
@@ -126,25 +159,25 @@ app.post('/api/extract-voice-text', async (req, res) => {
     res.json({
       provider: result.provider,
       note: result.note || null,
-      lines: matchExtractedLines(result.lines),
+      lines: matchExtractedLines(result.lines, priceCategory),
     });
   } catch (err) {
     res.status(502).json({ error: `Could not structure the recording: ${err.message}` });
   }
 });
 
-/** Body: { text: "one item per line" } - the typed fallback. */
+/** Body: { text: "one item per line", priceCategory } - the typed fallback. */
 app.post('/api/parse-text', (req, res) => {
   const lines = String(req.body.text || '').split('\n').map((l) => l.trim()).filter(Boolean);
   if (!lines.length) return res.status(400).json({ error: 'Type at least one line.' });
-  res.json({ provider: 'text', lines: matchRawLines(lines) });
+  res.json({ provider: 'text', lines: matchRawLines(lines, req.body.priceCategory) });
 });
 
-/** Body: { text, qty } - re-run one edited line through the matcher. */
+/** Body: { text, qty, priceCategory } - re-run one edited line through the matcher. */
 app.post('/api/rematch', (req, res) => {
   const text = String(req.body.text || '').trim();
   if (!text) return res.status(400).json({ error: 'Line is empty.' });
-  const [line] = matchRawLines([text]);
+  const [line] = matchRawLines([text], req.body.priceCategory);
   if (req.body.qty != null) {
     line.qty = Number(req.body.qty);
     line.amount = Math.round(line.rate * line.qty * 100) / 100;
@@ -160,25 +193,50 @@ app.post('/api/learn', (req, res) => {
   res.json({ ok: true, learned: Object.keys(learning.all()).length });
 });
 
-app.get('/api/quotations', (_req, res) => res.json(readQuotes()));
+app.get('/api/quotations', (_req, res) => res.json(quotations.list()));
 
+app.get('/api/quotations/:id', (req, res) => {
+  const q = quotations.get(Number(req.params.id));
+  if (!q) return res.status(404).json({ error: 'Quotation not found.' });
+  res.json(q);
+});
+
+// Save. Creates a draft, or updates an existing draft when an id is supplied.
+// A draft has a stable internal id but no customer-facing number yet.
 app.post('/api/quotations', (req, res) => {
-  const all = readQuotes();
-  const number = 6885 + all.length;
-  const quote = {
-    number,
-    createdAt: new Date().toISOString(),
-    customer: req.body.customer || 'QUOTATION',
-    salesman: req.body.salesman || 'DIRECT SMAN',
-    lines: req.body.lines || [],
-    total: req.body.total || 0,
-    roundOff: req.body.roundOff || 0,
-    grandTotal: req.body.grandTotal || 0,
-    negotiatedTotal: req.body.negotiatedTotal ?? null,
-  };
-  all.push(quote);
-  writeQuotes(all);
-  res.json(quote);
+  try {
+    const id = req.body.id != null ? Number(req.body.id) : null;
+    const q = id ? quotations.updateDraft(id, req.body) : quotations.createDraft(req.body);
+    res.json(q);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Issue (finalise/print). Mints the linear number once, atomically. Idempotent:
+// issuing an already-issued quote returns the same number (a reprint).
+app.post('/api/quotations/:id/issue', (req, res) => {
+  try {
+    const q = quotations.issue(Number(req.params.id));
+    res.json(q);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// The archived, numbered PDF - reprintable identically from any device.
+app.get('/api/quotations/:id/pdf', async (req, res) => {
+  try {
+    const q = quotations.get(Number(req.params.id));
+    if (!q) return res.status(404).json({ error: 'Quotation not found.' });
+    if (q.docNumber == null) return res.status(409).json({ error: 'Quotation is not issued yet.' });
+    const file = await quotationPdf.ensurePdf(q);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="quotation-${q.docNumber}.pdf"`);
+    fs.createReadStream(file).pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {

@@ -57,6 +57,10 @@
     "amper": "amp",
     "mtr": "meter",
     "mts": "meter",
+    "mt": "meter",
+    "lhs": "lsh",
+    "frlhs": "frlsh",
+    "flsh": "lsh",
     "nos": "",
     "pcs": "",
     "pices": "",
@@ -140,8 +144,7 @@
       "wire coil",
       "coil",
       "house wire",
-      "sqmm wire",
-      "fr wire"
+      "sqmm wire"
     ],
     "FLEX_WIRE": [
       "flexible wire",
@@ -149,6 +152,105 @@
       "luse wire",
       "core wire",
       "multi strand"
+    ],
+    "FR": [
+      "fr",
+      "fr wire",
+      "safety pro",
+      "fr cable",
+      "flame retardant wire"
+    ],
+    "FR_LSH": [
+      "lsh",
+      "fr-lsh",
+      "fr_lsh",
+      "frlsh",
+      "fr lsh",
+      "flexy plus",
+      "low smoke wire",
+      "lsh wire"
+    ],
+    "PFFR": [
+      "pffr",
+      "power plus",
+      "premium flexible wire"
+    ],
+    "VIR_CU": [
+      "vir",
+      "vir_cu",
+      "vir copper",
+      "vir wire",
+      "vir cable"
+    ],
+    "VIR_AL": [
+      "vir_al",
+      "vir aluminium",
+      "vir aluminum",
+      "vir alu"
+    ],
+    "CTS_CU": [
+      "cts",
+      "cts_cu",
+      "cts copper",
+      "cts wire",
+      "cts cable"
+    ],
+    "CTS_AL": [
+      "cts_al",
+      "cts aluminium",
+      "cts aluminum",
+      "cts alu"
+    ],
+    "TWIN_AL": [
+      "twin_al",
+      "twin aluminium",
+      "twin aluminum",
+      "twin alu"
+    ],
+    "WP_AL": [
+      "wp",
+      "wp_al",
+      "wp aluminium",
+      "weatherproof wire",
+      "service wire",
+      "w.p. wire"
+    ],
+    "SUBMERSIBLE": [
+      "submersible",
+      "submersible cable",
+      "submersible wire",
+      "pump cable",
+      "flat cable"
+    ],
+    "TF_TP": [
+      "tf",
+      "tf_tp",
+      "tf/tp",
+      "twin flat",
+      "twin parallel",
+      "tf wire",
+      "tp wire"
+    ],
+    "SPEAKER": [
+      "speaker",
+      "speaker wire",
+      "speaker cable"
+    ],
+    "SINGLE_CORE": [
+      "single_core",
+      "single core wire",
+      "single core cable",
+      "single core",
+      "bare copper wire",
+      "bare wire"
+    ],
+    "MULTICORE": [
+      "multicore cable",
+      "multi core cable",
+      "multicore wire",
+      "multi core wire",
+      "multicore",
+      "multi core"
     ],
     "MCB": [
       "mcb",
@@ -337,8 +439,10 @@
       "havels",
       "hevells"
     ],
-    "VIR": [
-      "vir"
+    "KUNDAN CAB": [
+      "kundan cab",
+      "kundan cable",
+      "kundan"
     ],
     "3M": [
       "3m",

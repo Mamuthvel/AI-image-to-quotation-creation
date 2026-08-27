@@ -4,31 +4,75 @@ const defaults = require('../data/defaults.json');
 const { extractSpec } = require('./attributes');
 const { normalizeLines, expandDittos, applySpelling, foldFractions } = require('./normalize');
 const learning = require('./learning');
+const pricing = require('./pricing');
 
 const S = defaults.scoring;
 const T = defaults.thresholds;
 
-const HARD_ATTRS = ['amps', 'coreSqmm', 'sizeInch', 'sizeLabel', 'modules', 'watts', 'sizeMm', 'sweepMm', 'strand'];
+const HARD_ATTRS = ['amps', 'coreSqmm', 'sizeInch', 'sizeLabel', 'modules', 'watts', 'sizeMm', 'sweepMm', 'strand', 'cores'];
+const DEFAULT_PRICE_CATEGORY = 'list';
 
-function scoreItem(item, parsed) {
+/**
+ * Compare a catalogue attribute against a parsed one. When both read as numbers
+ * they are compared numerically, so a catalogue that stored "2.5" (string) or
+ * 2.5 (number) both satisfy a customer's 2.5. Non-numeric values fall back to a
+ * case-insensitive string match.
+ */
+function attrEquals(have, want) {
+  const nh = Number(have);
+  const nw = Number(want);
+  if (Number.isFinite(nh) && Number.isFinite(nw) && String(have).trim() !== '' && String(want).trim() !== '') {
+    return nh === nw;
+  }
+  return String(have).toLowerCase() === String(want).toLowerCase();
+}
+
+/**
+ * In `loose` mode a hard-attribute mismatch is penalised instead of being
+ * disqualifying, and the substitution is recorded. Used only as a fallback when
+ * the category matched but every item was ruled out on a stocked-size mismatch,
+ * so the counter still sees the category's real items (nearest size first)
+ * rather than a dead "no match". Numeric penalties scale with relative distance
+ * so the closest available size ranks top.
+ */
+function scoreItem(item, parsed, { loose = false } = {}) {
   const { spec, brand } = parsed;
   let score = S.categoryBase;
   const matched = [];
   const assumed = [];
+  const substituted = [];
 
   for (const [key, want] of Object.entries(spec)) {
     const have = item.attrs[key];
     if (have === undefined) {
       // Item does not carry this attribute at all. A hard attribute the
       // customer named but the SKU lacks is disqualifying; soft ones are not.
-      if (HARD_ATTRS.includes(key)) return null;
+      if (HARD_ATTRS.includes(key)) {
+        if (!loose) return null;
+        score += S.attrMismatch;
+        substituted.push({ key, want, have: null });
+      }
       continue;
     }
-    if (String(have).toLowerCase() === String(want).toLowerCase()) {
+    if (attrEquals(have, want)) {
       score += S.attrMatch;
       matched.push(key);
     } else if (HARD_ATTRS.includes(key)) {
-      return null;
+      if (!loose) return null;
+      const nh = Number(have);
+      const nw = Number(want);
+      if (Number.isFinite(nh) && Number.isFinite(nw)) {
+        const rel = Math.abs(nh - nw) / Math.max(Math.abs(nh), Math.abs(nw), 1);
+        score += S.attrMismatch * rel; // nearer size loses fewer points
+      } else {
+        score += S.attrMismatch;
+      }
+      substituted.push({ key, want, have });
+    } else if (key === 'lengthMtr') {
+      // Coil length is a packaging choice, not a spec error - a customer
+      // asking for a length this SKU doesn't come in shouldn't tank
+      // confidence the way a wrong brand or wrong core count would.
+      score += S.lengthMismatch;
     } else {
       score += S.attrMismatch;
     }
@@ -60,7 +104,7 @@ function scoreItem(item, parsed) {
   }
 
   score += item.popularity * S.popularityWeight;
-  return { item, score, matched, assumed };
+  return { item, score, matched, assumed, substituted };
 }
 
 function idealScore(parsed) {
@@ -97,21 +141,75 @@ function classify(ranked, parsed, ideal) {
   return { state: 'confirmed', reasons: [] };
 }
 
-function matchLine(line) {
+const ATTR_UNIT = { coreSqmm: 'sq.mm', amps: 'A', watts: 'W', sizeMm: 'mm', cores: 'core' };
+const fmtAttr = (key, v) => (v == null ? '—' : `${v}${ATTR_UNIT[key] ? ` ${ATTR_UNIT[key]}` : ''}`);
+
+/**
+ * Human reason for a nearest-value substitution: what the customer asked for
+ * isn't stocked, and which values exist to pick from instead. The "stocked"
+ * list is constrained to items that satisfy the customer's OTHER stated hard
+ * attributes - otherwise "6mm 10 core" would report "10 core not stocked" while
+ * listing 10 core (which exists, but only at thinner sizes).
+ */
+function substituteReasons(top, pool, spec) {
+  return (top.substituted || []).map(({ key, want }) => {
+    const others = Object.keys(spec).filter((k) => k !== key && HARD_ATTRS.includes(k));
+    let siblings = pool.filter((i) => others.every((k) => attrEquals(i.attrs[k], spec[k])));
+    if (!siblings.length) siblings = pool; // other attrs themselves unstocked - fall back to the whole category
+    const stocked = [...new Set(siblings.map((i) => i.attrs[key]).filter((v) => v != null))]
+      .sort((a, b) => Number(a) - Number(b));
+    const chosen = top.item.attrs[key];
+    const ctx = others
+      .filter((k) => top.item.attrs[k] != null)
+      .map((k) => fmtAttr(k, top.item.attrs[k]))
+      .join(', ');
+    const where = ctx ? ` at ${ctx}` : '';
+    const list = stocked.length ? ` Stocked${where}: ${stocked.map((v) => fmtAttr(key, v)).join(', ')}.` : '';
+    return `${fmtAttr(key, want)} not stocked${where} - showing nearest (${fmtAttr(key, chosen)}).${list}`;
+  });
+}
+
+function matchLine(line, priceCategory = DEFAULT_PRICE_CATEGORY) {
+  const cat = pricing.listCategories().some((c) => c.code === priceCategory) ? priceCategory : DEFAULT_PRICE_CATEGORY;
   const learned = learning.lookup(line.description);
   const parsed = extractSpec(line.description);
 
-  let pool = items;
-  if (parsed.category) pool = items.filter((i) => i.category === parsed.category);
-  else pool = [];
+  // A "family" phrase like a bare "1.5 sqmm wire" resolves to a family category
+  // (WIRE) that the current catalogue may split into sub-types (FR, VIR...) and
+  // therefore carry no stock under. defaults.categoryFallback maps the family to
+  // the shop's house default so generic phrasing still lands on real stock.
+  let effectiveCategory = parsed.category;
+  let pool = [];
+  if (parsed.category) {
+    pool = items.filter((i) => i.category === parsed.category);
+    if (!pool.length) {
+      const fb = (defaults.categoryFallback || {})[parsed.category];
+      if (fb) {
+        effectiveCategory = fb;
+        pool = items.filter((i) => i.category === fb);
+      }
+    }
+  }
 
   const ideal = idealScore(parsed);
-  let ranked = pool
-    .map((i) => scoreItem(i, parsed))
+  const rank = (loose) => pool
+    .map((i) => scoreItem(i, parsed, { loose }))
     .filter(Boolean)
     .map((c) => ({ ...c, confidence: Math.max(0, Math.min(100, Math.round((c.score / ideal) * 100))) }))
     .sort((a, b) => b.score - a.score)
     .slice(0, 6);
+
+  let ranked = rank(false);
+
+  // Category matched but every item was ruled out on a stocked-size mismatch
+  // (e.g. "cts alumini 1 sqmm" when CTS aluminium starts at 4). Rather than a
+  // dead "no match", show the category's real items - nearest size first - so
+  // the counter can pick one from the dropdown.
+  let sizeSubstitute = false;
+  if (pool.length && !ranked.length) {
+    ranked = rank(true);
+    sizeSubstitute = ranked.length > 0;
+  }
 
   // A confirmed override from a previous quotation always wins.
   if (learned) {
@@ -124,33 +222,42 @@ function matchLine(line) {
     }
   }
 
-  const { state, reasons } = learned && ranked[0] && ranked[0].score === 999
+  let { state, reasons } = learned && ranked[0] && ranked[0].score === 999
     ? { state: 'confirmed', reasons: [] }
     : classify(ranked, parsed, ideal);
 
+  // Nearest-size fallback: flag it amber ("Check this") and say what wasn't
+  // stocked, so the substitution is a deliberate choice, never a silent one.
+  if (sizeSubstitute && !(learned && ranked[0] && ranked[0].score === 999)) {
+    state = 'ambiguous';
+    reasons = substituteReasons(ranked[0], pool, parsed.spec);
+  }
+
   const top = ranked[0] || null;
+  const topDecorated = top ? pricing.decorate(top.item) : null;
+  const topRate = topDecorated ? topDecorated.rates[cat] : 0;
   return {
     ...line,
-    parsedCategory: parsed.category,
+    parsedCategory: effectiveCategory,
     parsedBrand: parsed.brand,
     parsedSpec: parsed.spec,
     state,
     reasons,
     confidence: top ? top.confidence : 0,
-    item: top ? top.item : null,
-    rate: top ? top.item.rate : 0,
+    item: topDecorated,
+    rate: topRate,
     uom: top ? top.item.uom : 'Nos',
-    amount: top ? Math.round(top.item.rate * line.qty * 100) / 100 : 0,
-    candidates: ranked.map((c) => ({
-      sku: c.item.sku, name: c.item.name, brand: c.item.brand,
-      rate: c.item.rate, uom: c.item.uom, confidence: c.confidence,
-    })),
+    amount: top ? Math.round(topRate * line.qty * 100) / 100 : 0,
+    candidates: ranked.map((c) => {
+      const d = pricing.decorate(c.item);
+      return { sku: d.sku, name: d.name, brand: d.brand, rate: d.rates[cat], rates: d.rates, uom: d.uom, confidence: c.confidence };
+    }),
     source: learned ? 'learned' : 'rule',
   };
 }
 
-function matchRawLines(rawLines) {
-  return normalizeLines(rawLines).map(matchLine);
+function matchRawLines(rawLines, priceCategory = DEFAULT_PRICE_CATEGORY) {
+  return normalizeLines(rawLines).map((line) => matchLine(line, priceCategory));
 }
 
 function sumExpression(expr) {
@@ -162,7 +269,7 @@ function sumExpression(expr) {
  * Takes lines already transcribed by the vision model. Quantity comes from the
  * model; description still goes through ditto expansion and spelling repair.
  */
-function matchExtractedLines(lines) {
+function matchExtractedLines(lines, priceCategory = DEFAULT_PRICE_CATEGORY) {
   const expanded = expandDittos(lines.map((l) => foldFractions(String(l.raw || ''))));
 
   return expanded.map((entry, i) => {
@@ -183,7 +290,7 @@ function matchExtractedLines(lines) {
       readConfidence: src.confidence == null ? null : Math.round(src.confidence * 100),
     };
 
-    const matched = matchLine(line);
+    const matched = matchLine(line, priceCategory);
     if (computed != null && stated != null && computed !== stated) {
       matched.qtyConflict = { computed, stated };
       matched.reasons = [`Sheet totals ${stated} but the sum reads ${computed}`, ...matched.reasons];
@@ -196,8 +303,7 @@ function matchExtractedLines(lines) {
 /** Free-text search for the manual picker in the grid. */
 function searchItems(q, limit = 25) {
   const terms = String(q || '').toLowerCase().split(/\s+/).filter(Boolean);
-  if (!terms.length) return items.slice(0, limit);
-  return items
+  const pool = !terms.length ? items.slice(0, limit) : items
     .map((i) => {
       const hay = `${i.name} ${i.brand} ${i.category} ${i.sku}`.toLowerCase();
       const hits = terms.filter((t) => hay.includes(t)).length;
@@ -207,6 +313,7 @@ function searchItems(q, limit = 25) {
     .sort((a, b) => b.i.popularity - a.i.popularity)
     .slice(0, limit)
     .map((x) => x.i);
+  return pool.map((i) => pricing.decorate(i));
 }
 
 module.exports = { matchLine, matchRawLines, matchExtractedLines, searchItems, items };

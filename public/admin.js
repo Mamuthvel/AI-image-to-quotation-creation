@@ -1,10 +1,11 @@
-/* Limras Item Master — add / edit / delete the catalogue. */
+/* Limras Item Master — add / edit / delete the catalogue, plus pricing. */
 'use strict';
 
 const $ = (id) => document.getElementById(id);
 const money = (n) => Number(n || 0).toFixed(2);
 
 let items = [];
+let priceCategories = [];
 let editingSku = null;
 
 async function api(method, url, body) {
@@ -17,6 +18,41 @@ async function api(method, url, body) {
   if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
 }
+
+/* ───────────────────────────────────────────── global price categories */
+
+async function loadPriceCategories() {
+  priceCategories = await api('GET', '/api/price-categories');
+  renderPriceCatPanel();
+}
+
+function renderPriceCatPanel() {
+  const el = $('priceCatRows');
+  el.innerHTML = priceCategories.map((c) => `
+    <div class="price-cat-row${c.code === 'list' ? ' locked' : ''}">
+      <label>${c.label}</label>
+      <div class="pct-input">
+        <input type="number" step="0.1" min="0" max="99.9" value="${c.discountPct}"
+          data-code="${c.code}" ${c.code === 'list' ? 'disabled' : ''} />
+        <span>% off</span>
+      </div>
+    </div>`).join('');
+
+  el.querySelectorAll('input[data-code]').forEach((input) => {
+    input.addEventListener('change', async (e) => {
+      const code = e.target.dataset.code;
+      try {
+        priceCategories = await api('PUT', `/api/price-categories/${encodeURIComponent(code)}`, { discountPct: Number(e.target.value) });
+        await loadItems();
+      } catch (err) {
+        alert(err.message);
+        renderPriceCatPanel();
+      }
+    });
+  });
+}
+
+/* ───────────────────────────────────────────── item grid */
 
 async function loadItems() {
   items = await api('GET', '/api/items?limit=100000');
@@ -49,6 +85,7 @@ function render() {
 }
 
 function rowEl(item) {
+  const r = item.rates || {};
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td class="sku">${item.sku}</td>
@@ -56,7 +93,11 @@ function rowEl(item) {
     <td>${item.brand}</td>
     <td>${item.category}</td>
     <td>${item.uom}</td>
-    <td class="num rate">${money(item.rate)}</td>
+    <td class="num rate">${money(item.listPrice)}</td>
+    <td class="num rate">${money(r.cost)}</td>
+    <td class="num rate">${money(r.sp)}</td>
+    <td class="num rate">${money(r.ssp)}</td>
+    <td class="num rate">${money(r.sr)}</td>
     <td class="num pop">${item.popularity}</td>
     <td>
       <div class="admin-row-actions">
@@ -72,6 +113,27 @@ function rowEl(item) {
 
 /* ───────────────────────────────────────────── form */
 
+function overrideCategories() {
+  return priceCategories.filter((c) => c.code !== 'list');
+}
+
+function renderOverrideRows(item) {
+  const overrides = (item && item.overrides) || {};
+  $('overrideRows').innerHTML = overrideCategories().map((c) => {
+    const ov = overrides[c.code];
+    const value = ov && ov.discountPct != null ? ov.discountPct : '';
+    return `
+      <div class="price-cat-row">
+        <label>${c.label} <span class="hint">(global ${c.discountPct}%)</span></label>
+        <div class="pct-input">
+          <input type="number" step="0.1" min="0" max="99.9" placeholder="${c.discountPct}"
+            data-override-code="${c.code}" value="${value}" />
+          <span>% off</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 function openForm(item) {
   editingSku = item ? item.sku : null;
   $('formTitle').textContent = item ? `Edit ${item.sku}` : 'Add item';
@@ -82,9 +144,11 @@ function openForm(item) {
   $('f-brand').value = item ? item.brand : '';
   $('f-category').value = item ? item.category : '';
   $('f-uom').value = item ? item.uom : 'Nos';
-  $('f-rate').value = item ? item.rate : '';
+  $('f-rate').value = item ? item.listPrice : '';
   $('f-popularity').value = item ? item.popularity : 50;
   $('f-attrs').value = item ? JSON.stringify(item.attrs || {}, null, 2) : '{}';
+  $('overridePanel').hidden = !item;
+  if (item) renderOverrideRows(item);
   $('itemModal').hidden = false;
   $('f-sku').disabled ? $('f-name').focus() : $('f-sku').focus();
 }
@@ -113,14 +177,26 @@ async function submitForm(e) {
     brand: $('f-brand').value.trim(),
     category: $('f-category').value.trim(),
     uom: $('f-uom').value.trim() || 'Nos',
-    rate: Number($('f-rate').value),
+    listPrice: Number($('f-rate').value),
     popularity: Number($('f-popularity').value) || 0,
     attrs,
   };
 
   try {
+    const sku = editingSku || payload.sku;
     if (editingSku) await api('PUT', `/api/items/${encodeURIComponent(editingSku)}`, payload);
     else await api('POST', '/api/items', payload);
+
+    if (editingSku) {
+      const overrideInputs = document.querySelectorAll('#overrideRows input[data-override-code]');
+      for (const input of overrideInputs) {
+        const code = input.dataset.overrideCode;
+        const raw = input.value.trim();
+        if (raw === '') await api('DELETE', `/api/items/${encodeURIComponent(sku)}/overrides/${encodeURIComponent(code)}`);
+        else await api('PUT', `/api/items/${encodeURIComponent(sku)}/overrides/${encodeURIComponent(code)}`, { discountPct: Number(raw) });
+      }
+    }
+
     closeForm();
     await loadItems();
   } catch (err) {
@@ -151,6 +227,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !$('itemModal').hidden) closeForm();
 });
 
-loadItems().catch((err) => {
+Promise.all([loadPriceCategories(), loadItems()]).catch((err) => {
   $('countPill').textContent = err.message;
 });
