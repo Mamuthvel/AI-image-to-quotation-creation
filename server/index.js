@@ -201,6 +201,44 @@ app.get('/api/quotations/:id', (req, res) => {
   res.json(q);
 });
 
+// Reload a saved quote into the desk. Saved lines carry only the essentials, so
+// each is re-hydrated into the desk's shape: the item is looked up and decorated
+// (rates for every price category, so the per-line dropdown still works), while
+// the saved qty / rate / amount are kept exactly as they were.
+function hydrateLine(l, i, priceCategory) {
+  const raw = l.sku ? itemsStore.items.find((it) => it.sku === l.sku) : null;
+  let item = null;
+  if (raw) item = pricing.decorate(raw);
+  else if (l.sku || l.name) {
+    // item retired from the master since - keep a shell so the name still shows
+    item = { sku: l.sku || '', name: l.name || '', uom: l.uom || 'Nos', rates: { [l.priceCategory || priceCategory]: Number(l.rate) || 0 } };
+  }
+  return {
+    index: i,
+    rawText: l.rawText || l.name || '',
+    description: l.description || '',
+    descriptionRaw: l.description || '',
+    qty: Number(l.qty) || 0,
+    qtyExpression: l.qtyExpression || null,
+    uom: l.uom || (item ? item.uom : 'Nos'),
+    rate: Number(l.rate) || 0,
+    amount: Number(l.amount) || 0,
+    state: l.state || (item ? 'confirmed' : 'unmatched'),
+    reasons: [],
+    confidence: item ? 100 : 0,
+    item,
+    candidates: [],
+    priceCategory: l.priceCategory || priceCategory,
+    source: 'reloaded',
+  };
+}
+
+app.get('/api/quotations/:id/desk', (req, res) => {
+  const q = quotations.get(Number(req.params.id));
+  if (!q) return res.status(404).json({ error: 'Quotation not found.' });
+  res.json({ ...q, lines: (q.lines || []).map((l, i) => hydrateLine(l, i, q.priceCategory)) });
+});
+
 // Save. Creates a draft, or updates an existing draft when an id is supplied.
 // A draft has a stable internal id but no customer-facing number yet.
 app.post('/api/quotations', (req, res) => {
