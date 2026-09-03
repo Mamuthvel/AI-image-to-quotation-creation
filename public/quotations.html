@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Limras Electricals Agency — Quotations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .q-shell { max-width: 1000px; margin: 0 auto; padding: 20px 16px; }
+  .q-wrap { background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; overflow-x: auto; }
+  .q-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .q-table thead th {
+    font-family: var(--f-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-soft); text-align: left;
+    padding: 10px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap;
+  }
+  .q-table td { padding: 10px 12px; border-bottom: 1px solid var(--rule-soft); }
+  .q-table tbody tr:hover { background: var(--panel-sunk); }
+  .q-num { font-family: var(--f-mono); font-weight: 600; }
+  .q-amt { font-family: var(--f-mono); text-align: right; white-space: nowrap; }
+  .q-badge { font-family: var(--f-mono); font-size: 10.5px; padding: 2px 7px; border-radius: 10px; }
+  .q-badge.issued { background: #EAF4EF; color: var(--earth); }
+  .q-badge.draft { background: var(--phase-y-bg); color: #6B4C05; }
+  .q-empty { padding: 40px 16px; text-align: center; color: var(--ink-soft); }
+  .q-actions { text-align: right; white-space: nowrap; }
+  .q-actions .btn { margin-left: 6px; }
+  .q-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .q-search {
+    flex: 1; min-width: 180px; font-size: 16px; padding: 8px 12px;
+    border: 1px solid var(--rule); border-radius: 4px;
+    background: var(--panel); color: var(--ink); font-family: var(--f-body);
+  }
+  .q-search:focus { outline: 2px solid var(--phase-b); outline-offset: -1px; }
+  .q-count { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+  @media (max-width: 640px) {
+    .q-hide-sm { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="mark">
+    <span class="mark-rule" aria-hidden="true"></span>
+    <div>
+      <h1>Quotations</h1>
+      <p class="mark-sub">Every quotation created — drafts and issued</p>
+    </div>
+  </div>
+  <div class="masthead-meta">
+    <span id="countPill" class="pill pill-idle">Loading…</span>
+    <a href="/" class="btn btn-ghost">Back to quotation desk</a>
+  </div>
+</header>
+
+<main class="q-shell">
+  <div class="q-toolbar">
+    <input id="qSearch" class="q-search" type="search" placeholder="Search by number or customer…" autocomplete="off" />
+    <span id="qCount" class="q-count"></span>
+  </div>
+  <div class="q-wrap">
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th class="q-hide-sm">Salesman</th>
+          <th class="q-hide-sm">Lines</th>
+          <th>Status</th>
+          <th style="text-align:right">Payable</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="qRows"></tbody>
+    </table>
+    <div id="qEmpty" class="q-empty" hidden>No quotations yet. Create one from the desk.</div>
+  </div>
+</main>
+
+<script>
+  const money = (n) => Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  let all = [];
+
+  function rowHtml(q) {
+    const when = new Date(q.issuedAt || q.createdAt);
+    const dateStr = when.toLocaleDateString('en-GB') + ' ' + when.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const no = q.docNumber != null ? `#${q.docNumber}` : '—';
+    const badge = q.status === 'issued'
+      ? '<span class="q-badge issued">Issued</span>'
+      : '<span class="q-badge draft">Draft</span>';
+    const pdf = q.docNumber != null
+      ? `<a class="btn btn-outline" href="/api/quotations/${q.id}/pdf" target="_blank">PDF</a>`
+      : '';
+    const open = `<a class="btn btn-ghost" href="/?open=${q.id}">Open</a>`;
+    const dup = `<a class="btn btn-ghost" href="/?duplicate=${q.id}">Duplicate</a>`;
+    const lines = (q.lines || []).length;
+    return `
+      <tr>
+        <td class="q-num">${esc(no)}</td>
+        <td>${esc(dateStr)}</td>
+        <td>${esc(q.customer || 'QUOTATION')}</td>
+        <td class="q-hide-sm">${esc(q.salesman || '')}</td>
+        <td class="q-hide-sm">${lines}</td>
+        <td>${badge}</td>
+        <td class="q-amt">${money(q.grandTotal)}</td>
+        <td class="q-actions">${open}${dup}${pdf}</td>
+      </tr>`;
+  }
+
+  function matches(q, terms) {
+    const hay = `${q.docNumber != null ? '#' + q.docNumber + ' ' + q.docNumber : ''} ${q.customer || ''} ${q.salesman || ''} ${q.status}`.toLowerCase();
+    return terms.every((t) => hay.includes(t));
+  }
+
+  function renderList() {
+    const q = document.getElementById('qSearch').value.trim().toLowerCase();
+    const terms = q ? q.split(/\s+/) : [];
+    const rows = terms.length ? all.filter((x) => matches(x, terms)) : all;
+    document.getElementById('qRows').innerHTML = rows.map(rowHtml).join('');
+    document.getElementById('qEmpty').hidden = rows.length > 0;
+    document.getElementById('qEmpty').textContent = all.length
+      ? 'No quotations match that search.'
+      : 'No quotations yet. Create one from the desk.';
+    document.getElementById('qCount').textContent = terms.length
+      ? `${rows.length} of ${all.length}` : '';
+  }
+
+  async function load() {
+    try {
+      all = await (await fetch('/api/quotations')).json();
+      const pill = document.getElementById('countPill');
+      pill.textContent = `${all.length} quotation${all.length === 1 ? '' : 's'}`;
+      pill.className = 'pill pill-live';
+      renderList();
+    } catch (err) {
+      document.getElementById('countPill').textContent = 'Failed to load';
+    }
+  }
+
+  document.getElementById('qSearch').addEventListener('input', renderList);
+  load();
+</script>
+</body>
+</html>

@@ -18,6 +18,8 @@ let priceCategory = 'list';
 let priceCategories = [];
 let currentQuoteId = null;    // internal id, set on first save
 let currentDocNumber = null;  // linear number, set once the quote is issued
+let workspaceOpen = false;    // true once a quote is being built (even with no lines yet)
+let pendingIncoming = null;   // { newLines, label } awaiting a merge/new choice
 
 /* ───────────────────────────────────────────── data in */
 
@@ -75,9 +77,8 @@ async function submitImage() {
   setStatus('Reading the sheet…', 'idle');
   try {
     const out = await post('/api/extract', { ...pendingImage, priceCategory });
-    lines = out.lines;
-    resetQuoteIdentity();
-    render();
+    $('preview').hidden = true;
+    applyIncoming(out.lines, 'sheet');
     setStatus(out.note ? 'Sample sheet' : `Read by AI`, out.note ? 'idle' : 'live');
   } catch (err) {
     setStatus(err.message, 'idle');
@@ -92,10 +93,8 @@ async function loadTyped() {
   if (!text.trim()) return;
   try {
     const out = await post('/api/parse-text', { text, priceCategory });
-    lines = out.lines;
-    resetQuoteIdentity();
     $('preview').hidden = true;
-    render();
+    applyIncoming(out.lines, 'typed list');
     setStatus('Read from typed list', 'live');
   } catch (err) {
     setStatus(err.message, 'idle');
@@ -110,7 +109,6 @@ async function loadTyped() {
 // listening and we send it the resulting text instead. Set from /api/health.
 let visionProvider = 'anthropic';
 
-let pendingVoicePayload = null; // { type: 'audio', blob } | { type: 'text', text } - awaiting a merge/new-list choice
 
 /** Ticks the status line with elapsed seconds so a slow response doesn't read as a frozen page. */
 function startElapsedTicker(label) {
@@ -130,40 +128,20 @@ async function fetchVoiceResult(payload) {
   return post('/api/extract-voice-text', { text: payload.text, priceCategory });
 }
 
-async function runVoiceExtraction(payload, mode) {
-  $('voiceDestRow').hidden = true;
+/** Recording finished: read it, then let applyIncoming handle merge/new. */
+async function finishRecording(payload) {
+  setRecordingUi(false);
   const stopTicker = startElapsedTicker(payload.type === 'audio' ? 'Reading the recording' : 'Structuring the list');
   try {
     const out = await fetchVoiceResult(payload);
-    lines = mode === 'merge' ? lines.concat(out.lines) : out.lines;
-    if (mode !== 'merge') resetQuoteIdentity();
-    $('preview').hidden = true;
-    render();
     setStatus(out.note ? 'Sample sheet (voice)' : `Read by AI Voice`, out.note ? 'idle' : 'live');
-    $('recStatus').textContent = out.note
-      || (mode === 'merge' ? `Merged ${out.lines.length} line${out.lines.length === 1 ? '' : 's'} in.` : 'Done — check the rows below.');
+    $('recStatus').textContent = out.note || `Read ${out.lines.length} line${out.lines.length === 1 ? '' : 's'}.`;
+    applyIncoming(out.lines, 'recording');
   } catch (err) {
     $('recStatus').textContent = err.message;
   } finally {
     stopTicker();
-    pendingVoicePayload = null;
   }
-}
-
-/**
- * Nothing loaded yet means there's nothing to merge into, so the very first
- * recording in a session processes immediately, same as before. Once a list
- * exists, a second recording asks first: merge in, or replace it.
- */
-function finishRecording(payload) {
-  setRecordingUi(false);
-  if (lines.length === 0) {
-    runVoiceExtraction(payload, 'new');
-    return;
-  }
-  pendingVoicePayload = payload;
-  $('recStatus').textContent = 'Merge with the current list, or start a new one?';
-  $('voiceDestRow').hidden = false;
 }
 
 function setRecordingUi(isRecording) {
@@ -264,19 +242,6 @@ function toggleRecording() {
   else toggleAnthropicRecording();
 }
 
-async function loadSample() {
-  setStatus('Loading sample…', 'idle');
-  try {
-    const out = await post('/api/extract', { image: 'SAMPLE', mediaType: 'image/jpeg', priceCategory });
-    lines = out.lines;
-    resetQuoteIdentity();
-    render();
-    setStatus('Sample sheet', 'idle');
-  } catch (err) {
-    setStatus(err.message, 'idle');
-  }
-}
-
 /* ───────────────────────────────────────────── render */
 
 function setStatus(text, kind) {
@@ -286,10 +251,10 @@ function setStatus(text, kind) {
 }
 
 function render() {
-  const has = lines.length > 0;
-  $('emptyState').hidden = has;
-  $('workspace').hidden = !has;
-  if (!has) return;
+  const show = lines.length > 0 || workspaceOpen;
+  $('emptyState').hidden = show;
+  $('workspace').hidden = !show;
+  if (!show) return;
 
   const tbody = $('rows');
   tbody.innerHTML = '';
@@ -540,6 +505,92 @@ function resetQuoteIdentity() {
   $('saveMsg').textContent = '';
 }
 
+/** Open a blank quotation to build up from the type / voice / upload inputs. */
+function createQuotation() {
+  lines = [];
+  workspaceOpen = true;
+  resetQuoteIdentity();
+  render();
+  $('custName').focus();
+}
+
+/**
+ * Reload a saved quotation into the desk for editing. A draft edits in place. An
+ * issued quotation is immutable, so it opens as a revision - the lines load, but
+ * Save creates a NEW quotation rather than altering the document already given
+ * to the customer.
+ */
+async function openQuote(id, { duplicate = false } = {}) {
+  try {
+    const q = await (await fetch(`/api/quotations/${id}/desk`)).json();
+    if (q.error) { setStatus(q.error, 'idle'); return; }
+    lines = q.lines || [];
+    workspaceOpen = true;
+    $('negotiated').value = duplicate || q.negotiatedTotal == null ? '' : q.negotiatedTotal;
+    $('salesman').value = q.salesman || '';
+    if (q.priceCategory) {
+      priceCategory = q.priceCategory;
+      const sel = $('priceCategory');
+      if (sel) sel.value = q.priceCategory;
+    }
+    currentDocNumber = null;
+    $('btnPrint').textContent = 'Print';
+
+    if (duplicate) {
+      // A copy: fresh draft, no link back to the source, customer cleared to retype.
+      currentQuoteId = null;
+      $('custName').value = '';
+      const from = q.docNumber != null ? `#${q.docNumber}` : `draft #${id}`;
+      $('saveMsg').textContent = `Duplicated from ${from}. Save creates a new quotation.`;
+    } else {
+      $('custName').value = q.customer && q.customer !== 'QUOTATION' ? q.customer : '';
+      if (q.status === 'issued') {
+        currentQuoteId = null; // an issued document is immutable - edits become a new quotation
+        $('saveMsg').textContent = `Opened issued #${q.docNumber}. Edits save as a NEW quotation.`;
+      } else {
+        currentQuoteId = q.id;
+        $('saveMsg').textContent = 'Editing this draft — Save updates it, Print issues a number.';
+      }
+    }
+    render();
+  } catch (err) {
+    setStatus(err.message, 'idle');
+  }
+}
+
+/**
+ * Every input (photo, typed list, recording) funnels through here. With nothing
+ * on the desk yet it just loads the lines; once a list exists it asks whether to
+ * add to it or start fresh - so all three sources share the same merge/new logic.
+ */
+function applyIncoming(newLines, label) {
+  workspaceOpen = true;
+  if (!lines.length) {
+    lines = newLines;
+    resetQuoteIdentity();
+    render();
+    return;
+  }
+  pendingIncoming = { newLines, label: label || 'input' };
+  $('mergeMsg').textContent = `${newLines.length} line${newLines.length === 1 ? '' : 's'} read from the ${pendingIncoming.label}. Add to the current quotation, or start a new one?`;
+  $('mergeDialog').hidden = false;
+}
+
+function commitIncoming(mode) {
+  if (!pendingIncoming) return;
+  const { newLines } = pendingIncoming;
+  if (mode === 'merge') {
+    lines = lines.concat(newLines);
+    if (currentDocNumber != null) resetQuoteIdentity(); // can't extend an issued doc - continue as a new draft
+  } else {
+    lines = newLines;
+    resetQuoteIdentity();
+  }
+  pendingIncoming = null;
+  $('mergeDialog').hidden = true;
+  render();
+}
+
 function quotePayload() {
   const total = lines.reduce((s, l) => s + Number(l.amount || 0), 0);
   const grand = Math.round(total);
@@ -618,24 +669,22 @@ $('fileInput').addEventListener('change', (e) => {
 $('btnSubmitImage').addEventListener('click', submitImage);
 $('btnParseText').addEventListener('click', loadTyped);
 $('btnRecord').addEventListener('click', toggleRecording);
-$('btnVoiceMerge').addEventListener('click', () => {
-  if (pendingVoicePayload) runVoiceExtraction(pendingVoicePayload, 'merge');
-});
-$('btnVoiceNewList').addEventListener('click', () => {
-  if (pendingVoicePayload) runVoiceExtraction(pendingVoicePayload, 'new');
-});
-$('btnSample').addEventListener('click', loadSample);
+$('btnCreate').addEventListener('click', createQuotation);
 $('btnSave').addEventListener('click', saveQuote);
 $('btnPrint').addEventListener('click', issueAndPrint);
+$('mergeAdd').addEventListener('click', () => commitIncoming('merge'));
+$('mergeNew').addEventListener('click', () => commitIncoming('new'));
+$('mergeCancel').addEventListener('click', () => { pendingIncoming = null; $('mergeDialog').hidden = true; });
 $('btnNew').addEventListener('click', () => {
   lines = [];
   pendingImage = null;
-  pendingVoicePayload = null;
+  pendingIncoming = null;
+  workspaceOpen = false;
   currentQuoteId = null;
   currentDocNumber = null;
   $('btnPrint').textContent = 'Print';
   $('preview').hidden = true;
-  $('voiceDestRow').hidden = true;
+  $('mergeDialog').hidden = true;
   $('saveMsg').textContent = '';
   $('negotiated').value = '';
   render();
@@ -665,5 +714,12 @@ fetch('/api/health').then((r) => r.json()).then((h) => {
     h.visionReady ? 'live' : 'idle');
 });
 
-loadPriceCategories();
+loadPriceCategories().then(() => {
+  // Deep links from the Quotations page: ?open=<id> edits it, ?duplicate=<id> copies it.
+  const params = new URLSearchParams(location.search);
+  const dupId = params.get('duplicate');
+  const openId = params.get('open');
+  if (dupId) openQuote(dupId, { duplicate: true });
+  else if (openId) openQuote(openId);
+});
 render();

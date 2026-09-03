@@ -21,6 +21,7 @@
   </div>
   <div class="masthead-meta">
     <span id="statusPill" class="pill pill-idle">Checking…</span>
+    <a href="/quotations.html" class="btn btn-ghost">Quotations</a>
     <a href="/admin.html" class="btn btn-ghost">Manage items</a>
     <button id="btnNew" class="btn btn-ghost" type="button">Start over</button>
   </div>
@@ -48,25 +49,21 @@
       <button id="btnSubmitImage" class="btn btn-solid btn-block" type="button">Submit for reading</button>
     </figure>
 
-    <details class="typed">
-      <summary>Or type the list instead</summary>
+    <section class="typed">
+      <h2 class="input-head">Or type the list</h2>
       <textarea id="typedText" rows="7" spellcheck="false"
         placeholder="6 amps switch 78&#10;20 amps plug 9&#10;25x6 star screw 100"></textarea>
       <button id="btnParseText" class="btn btn-solid btn-block" type="button">Read typed list</button>
-    </details>
+    </section>
 
-    <details class="typed">
-      <summary>Or read the list aloud</summary>
+    <section class="typed">
+      <h2 class="input-head">Or read the list aloud</h2>
       <div class="voice-row">
         <button id="btnRecord" class="btn btn-solid" type="button">Start recording</button>
         <span id="recStatus" class="voice-status" role="status"></span>
       </div>
-      <div id="voiceDestRow" class="voice-dest-row" hidden>
-        <button id="btnVoiceMerge" class="btn btn-outline" type="button">Merge into existing list</button>
-        <button id="btnVoiceNewList" class="btn btn-ghost" type="button">Create a new list</button>
-      </div>
       <p class="voice-hint">Read out each item and quantity, then stop the recording.</p>
-    </details>
+    </section>
 
     <section class="legend" aria-label="Row status key">
       <h2>Row status</h2>
@@ -84,9 +81,9 @@
   <section class="pane-quote">
 
     <div id="emptyState" class="empty">
-      <p class="empty-lead">No sheet loaded.</p>
-      <p>Upload a photo and the lines land here priced, with anything uncertain flagged for you to confirm.</p>
-      <button id="btnSample" class="btn btn-solid" type="button">Load the sample sheet</button>
+      <p class="empty-lead">No quotation open.</p>
+      <p>Start a blank quotation, then add lines by typing, dictating, or uploading the customer's sheet — each can start a new list or merge into this one.</p>
+      <button id="btnCreate" class="btn btn-solid" type="button">Create quotation</button>
     </div>
 
     <div id="workspace" hidden>
@@ -158,6 +155,21 @@
     <p id="pickerRaw" class="picker-raw"></p>
     <input id="pickerSearch" type="search" placeholder="Search the item master…" autocomplete="off" />
     <ul id="pickerList" class="picker-list"></ul>
+  </div>
+</div>
+
+<!-- merge / new-list choice -->
+<div id="mergeDialog" class="picker" hidden>
+  <div class="picker-card merge-card" role="dialog" aria-modal="true" aria-labelledby="mergeTitle">
+    <header>
+      <h2 id="mergeTitle">Add to this quotation?</h2>
+    </header>
+    <p id="mergeMsg" class="picker-raw"></p>
+    <div class="merge-actions">
+      <button id="mergeAdd" class="btn btn-solid" type="button">Add to current list</button>
+      <button id="mergeNew" class="btn btn-outline" type="button">Start a new list</button>
+      <button id="mergeCancel" class="btn btn-ghost" type="button">Cancel</button>
+    </div>
   </div>
 </div>
 
