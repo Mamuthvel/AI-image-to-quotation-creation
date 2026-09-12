@@ -12,6 +12,7 @@ const learning = require('./services/learning');
 const pricing = require('./services/pricing');
 const quotations = require('./services/quotations-store');
 const quotationPdf = require('./services/quotation-pdf');
+const csvExport = require('./services/csv-export');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -272,6 +273,82 @@ app.get('/api/quotations/:id/pdf', async (req, res) => {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `inline; filename="quotation-${q.docNumber}.pdf"`);
     fs.createReadStream(file).pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Export single quotation as CSV.
+app.get('/api/quotations/:id/export/csv', (req, res) => {
+  try {
+    const q = quotations.get(Number(req.params.id));
+    if (!q) return res.status(404).json({ error: 'Quotation not found.' });
+    const csv = csvExport.exportQuotation(q, items);
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="quotation-${q.docNumber || 'draft'}-${Date.now()}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Bulk export: all quotations or filtered by status/date range.
+// Query params:
+//   status=draft|issued (filter by status)
+//   limit=100 (max quotations to export, default 200)
+//   startDate=ISO8601 (filter created >= this date)
+//   endDate=ISO8601 (filter created <= this date)
+app.get('/api/quotations/export/csv', (req, res) => {
+  try {
+    let list = quotations.list(Number(req.query.limit) || 200);
+
+    // Filter by status if provided
+    if (req.query.status) {
+      const status = String(req.query.status).toLowerCase();
+      list = list.filter((q) => q.status === status);
+    }
+
+    // Filter by date range if provided
+    if (req.query.startDate) {
+      const start = new Date(req.query.startDate);
+      list = list.filter((q) => new Date(q.createdAt) >= start);
+    }
+    if (req.query.endDate) {
+      const end = new Date(req.query.endDate);
+      list = list.filter((q) => new Date(q.createdAt) <= end);
+    }
+
+    if (list.length === 0) {
+      return res.status(404).json({ error: 'No quotations found matching the filter.' });
+    }
+
+    const csv = csvExport.exportBulk(list);
+    const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="quotations-bulk-${timestamp}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Export product catalog as CSV.
+// Query params:
+//   category=SWITCH_DOME (filter by category, optional)
+app.get('/api/catalog/export/csv', (req, res) => {
+  try {
+    let catalog = items;
+
+    if (req.query.category) {
+      const category = String(req.query.category).toUpperCase();
+      catalog = catalog.filter((i) => i.category === category);
+    }
+
+    const csv = csvExport.exportCatalog(catalog);
+    const timestamp = new Date().toISOString().split('T')[0];
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="catalog-${timestamp}.csv"`);
+    res.send(csv);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

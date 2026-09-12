@@ -12,6 +12,15 @@
 </head>
 <body>
 
+<script src="auth.js"></script>
+<script>
+  // Admin-only page
+  if (!auth.checkAuth() || !auth.isAdmin()) {
+    alert('Admin access required');
+    window.location.href = '/';
+  }
+</script>
+
 <header class="masthead">
   <div class="mark">
     <span class="mark-rule" aria-hidden="true"></span>
@@ -22,7 +31,9 @@
   </div>
   <div class="masthead-meta">
     <span id="countPill" class="pill pill-idle">Loading…</span>
+    <span id="userBadge" style="font-size: 12px; padding: 4px 8px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-right: 12px;"></span>
     <a href="/" class="btn btn-ghost">Back to quotation desk</a>
+    <button id="btnLogout" class="btn btn-ghost" type="button">Logout</button>
   </div>
 </header>
 
@@ -35,6 +46,8 @@
   <div class="admin-toolbar">
     <input id="search" type="search" placeholder="Search by name, SKU, brand or category…" autocomplete="off" />
     <button id="btnAdd" class="btn btn-solid" type="button">+ Add item</button>
+    <button id="btnExportCatalog" class="btn btn-outline" type="button">📥 Export CSV</button>
+    <button id="btnImportCatalog" class="btn btn-outline" type="button">📤 Import CSV</button>
   </div>
 
   <div class="table-wrap">
