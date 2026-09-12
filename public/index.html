@@ -11,6 +11,12 @@
 </head>
 <body>
 
+<script src="auth.js"></script>
+<script>
+  // Check authentication
+  if (!auth.checkAuth()) throw new Error('Not authenticated');
+</script>
+
 <header class="masthead">
   <div class="mark">
     <span class="mark-rule" aria-hidden="true"></span>
@@ -22,8 +28,10 @@
   <div class="masthead-meta">
     <span id="statusPill" class="pill pill-idle">Checking…</span>
     <a href="/quotations.html" class="btn btn-ghost">Quotations</a>
-    <a href="/admin.html" class="btn btn-ghost">Manage items</a>
+    <a id="adminLink" href="/admin.html" class="btn btn-ghost">Manage items</a>
+    <span id="userBadge" style="font-size: 12px; padding: 4px 8px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-right: 12px;"></span>
     <button id="btnNew" class="btn btn-ghost" type="button">Start over</button>
+    <button id="btnLogout" class="btn btn-ghost" type="button">Logout</button>
   </div>
 </header>
 
@@ -139,6 +147,7 @@
       <div class="actions">
         <button id="btnSave" class="btn btn-solid" type="button">Save quotation</button>
         <button id="btnPrint" class="btn btn-outline" type="button">Print</button>
+        <button id="btnExport" class="btn btn-outline" type="button">📥 CSV</button>
         <span id="saveMsg" class="save-msg" role="status"></span>
       </div>
     </div>

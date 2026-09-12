@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Limras Electricals — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #3b82f6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: var(--gray-900);
+  }
+
+  .login-wrapper {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 40px;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .login-header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+  }
+
+  .login-header p {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.5;
+  }
+
+  .form-container {
+    margin-bottom: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    transition: all 0.2s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  input[type="text"]::placeholder,
+  input[type="password"]::placeholder {
+    color: var(--gray-400);
+  }
+
+  .role-selector {
+    margin: 28px 0;
+  }
+
+  .role-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+  }
+
+  .role-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .role-option {
+    position: relative;
+  }
+
+  .role-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .role-option label {
+    display: block;
+    padding: 14px 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: none;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-size: 13px;
+    background: var(--gray-50);
+  }
+
+  .role-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+    color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  .role-badge {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .role-option label span {
+    display: block;
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+
+  .role-option input[type="radio"]:checked + label span {
+    color: var(--primary);
+  }
+
+  .error-alert {
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .error-alert.show {
+    display: block;
+  }
+
+  .error-alert strong {
+    font-weight: 600;
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+  }
+
+  .login-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+  }
+
+  .login-button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    color: var(--gray-300);
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gray-200);
+  }
+
+  .divider span {
+    padding: 0 12px;
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+
+  .demo-credentials {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 24px;
+  }
+
+  .demo-credentials h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .demo-item {
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .demo-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .demo-badge {
+    display: inline-block;
+    background: var(--gray-200);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-700);
+  }
+
+  .loading {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 32px 24px;
+    }
+
+    .login-header h1 {
+      font-size: 24px;
+    }
+
+    .role-options {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo">⚡</div>
+      <h1>Limras Electricals</h1>
+      <p>Quotation Management System</p>
+    </div>
+
+    <form id="loginForm">
+      <div id="errorAlert" class="error-alert"></div>
+
+      <div class="form-container">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-wrapper">
+            <input
+              id="username"
+              type="text"
+              placeholder="admin or staff"
+              required
+              autocomplete="off"
+              autofocus
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input
+              id="password"
+              type="password"
+              placeholder="Leave empty for demo"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="role-selector">
+        <span class="role-label">Select Role</span>
+        <div class="role-options">
+          <div class="role-option">
+            <input
+              type="radio"
+              id="roleAdmin"
+              name="role"
+              value="admin"
+              required
+              checked
+            />
+            <label for="roleAdmin">
+              <span class="role-badge">👤</span>
+              <strong>Admin</strong>
+              <span>Full Access</span>
+            </label>
+          </div>
+          <div class="role-option">
+            <input
+              type="radio"
+              id="roleStaff"
+              name="role"
+              value="staff"
+              required
+            />
+            <label for="roleStaff">
+              <span class="role-badge">📋</span>
+              <strong>Staff</strong>
+              <span>Limited Access</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="login-button">Login</button>
+    </form>
+
+    <div class="divider">
+      <span>Demo Access</span>
+    </div>
+
+    <div class="demo-credentials">
+      <h3>Demo Credentials</h3>
+      <div class="demo-item">
+        <span>👤 Admin:</span>
+        <span class="demo-badge">admin</span>
+        <span style="color: var(--gray-400);">/ any password</span>
+      </div>
+      <div class="demo-item">
+        <span>📋 Staff:</span>
+        <span class="demo-badge">staff</span>
+        <span style="color: var(--gray-400);">/ any password</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  // Redirect if already logged in
+  if (auth.isLoggedIn()) {
+    window.location.href = '/';
+  }
+
+  const form = document.getElementById('loginForm');
+  const errorAlert = document.getElementById('errorAlert');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    const role = document.querySelector('input[name="role"]:checked').value;
+
+    // Clear previous error
+    errorAlert.classList.remove('show');
+    errorAlert.innerHTML = '';
+
+    // Validate username
+    if (username !== 'admin' && username !== 'staff') {
+      errorAlert.innerHTML = '<strong>⚠ Invalid username.</strong> Use <span class="demo-badge">admin</span> or <span class="demo-badge">staff</span>';
+      errorAlert.classList.add('show');
+      document.getElementById('username').focus();
+      return;
+    }
+
+    // Add loading state
+    const button = form.querySelector('button');
+    button.disabled = true;
+    button.classList.add('loading');
+    button.textContent = 'Logging in...';
+
+    // Simulate authentication delay
+    await new Promise(resolve => setTimeout(resolve, 600));
+
+    // Set user and redirect
+    auth.setUser(username, role);
+    window.location.href = '/';
+  });
+
+  // Auto-focus next field on enter
+  document.getElementById('username').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('password').focus();
+    }
+  });
+
+  document.getElementById('password').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      form.dispatchEvent(new Event('submit'));
+    }
+  });
+</script>
+</body>
+</html>

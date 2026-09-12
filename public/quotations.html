@@ -35,12 +35,22 @@
   }
   .q-search:focus { outline: 2px solid var(--phase-b); outline-offset: -1px; }
   .q-count { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+  .q-selection-info { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); }
+  .q-checkbox { margin-right: 4px; cursor: pointer; }
+  .q-bulk-actions { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; padding: 12px; background: var(--panel-sunk); border-radius: 4px; }
+  .q-bulk-actions.hidden { display: none; }
   @media (max-width: 640px) {
     .q-hide-sm { display: none; }
   }
 </style>
 </head>
 <body>
+
+<script src="auth.js"></script>
+<script>
+  // Check authentication
+  if (!auth.checkAuth()) throw new Error('Not authenticated');
+</script>
 
 <header class="masthead">
   <div class="mark">
@@ -52,7 +62,9 @@
   </div>
   <div class="masthead-meta">
     <span id="countPill" class="pill pill-idle">Loading…</span>
+    <span id="userBadge" style="font-size: 12px; padding: 4px 8px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-right: 12px;"></span>
     <a href="/" class="btn btn-ghost">Back to quotation desk</a>
+    <button id="btnLogout" class="btn btn-ghost" type="button">Logout</button>
   </div>
 </header>
 
@@ -60,11 +72,19 @@
   <div class="q-toolbar">
     <input id="qSearch" class="q-search" type="search" placeholder="Search by number or customer…" autocomplete="off" />
     <span id="qCount" class="q-count"></span>
+    <button id="btnExportBulk" class="btn btn-outline" type="button">📥 Export All (CSV)</button>
+  </div>
+
+  <div id="qBulkActions" class="q-bulk-actions hidden">
+    <span id="qSelectionInfo" class="q-selection-info"></span>
+    <button id="btnExportSelected" class="btn btn-solid" type="button">📥 Export Selected (CSV)</button>
+    <button id="btnClearSelection" class="btn btn-ghost" type="button">Clear selection</button>
   </div>
   <div class="q-wrap">
     <table class="q-table">
       <thead>
         <tr>
+          <th style="width: 30px;"><input id="qSelectAll" class="q-checkbox" type="checkbox" title="Select all" /></th>
           <th>No.</th>
           <th>Date</th>
           <th>Customer</th>
@@ -86,6 +106,22 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   let all = [];
+  let selected = new Set(); // Track selected quotation IDs
+
+  function updateSelectionUI() {
+    const count = selected.size;
+    const bulkActions = document.getElementById('qBulkActions');
+    if (count > 0) {
+      bulkActions.classList.remove('hidden');
+      document.getElementById('qSelectionInfo').textContent = `${count} quotation${count === 1 ? '' : 's'} selected`;
+    } else {
+      bulkActions.classList.add('hidden');
+    }
+    // Update select-all checkbox
+    const allCheckboxes = document.querySelectorAll('.q-row-checkbox');
+    const selectAllCheckbox = document.getElementById('qSelectAll');
+    selectAllCheckbox.checked = allCheckboxes.length > 0 && selected.size === allCheckboxes.length;
+  }
 
   function rowHtml(q) {
     const when = new Date(q.issuedAt || q.createdAt);
@@ -97,11 +133,13 @@
     const pdf = q.docNumber != null
       ? `<a class="btn btn-outline" href="/api/quotations/${q.id}/pdf" target="_blank">PDF</a>`
       : '';
+    const csv = `<a class="btn btn-outline" href="/api/quotations/${q.id}/export/csv" download="quotation-${q.docNumber || 'draft'}.csv">CSV</a>`;
     const open = `<a class="btn btn-ghost" href="/?open=${q.id}">Open</a>`;
     const dup = `<a class="btn btn-ghost" href="/?duplicate=${q.id}">Duplicate</a>`;
     const lines = (q.lines || []).length;
     return `
-      <tr>
+      <tr data-quote-id="${q.id}">
+        <td><input class="q-row-checkbox q-checkbox" type="checkbox" data-id="${q.id}" /></td>
         <td class="q-num">${esc(no)}</td>
         <td>${esc(dateStr)}</td>
         <td>${esc(q.customer || 'QUOTATION')}</td>
@@ -109,7 +147,7 @@
         <td class="q-hide-sm">${lines}</td>
         <td>${badge}</td>
         <td class="q-amt">${money(q.grandTotal)}</td>
-        <td class="q-actions">${open}${dup}${pdf}</td>
+        <td class="q-actions">${open}${dup}${csv}${pdf}</td>
       </tr>`;
   }
 
@@ -129,6 +167,23 @@
       : 'No quotations yet. Create one from the desk.';
     document.getElementById('qCount').textContent = terms.length
       ? `${rows.length} of ${all.length}` : '';
+
+    // Re-attach checkbox listeners after re-rendering
+    document.querySelectorAll('.q-row-checkbox').forEach((checkbox) => {
+      checkbox.addEventListener('change', (e) => {
+        const id = parseInt(e.target.dataset.id);
+        if (e.target.checked) {
+          selected.add(id);
+        } else {
+          selected.delete(id);
+        }
+        updateSelectionUI();
+      });
+      // Check if this ID is already selected
+      const id = parseInt(checkbox.dataset.id);
+      checkbox.checked = selected.has(id);
+    });
+    updateSelectionUI();
   }
 
   async function load() {
@@ -143,7 +198,124 @@
     }
   }
 
+  // Display user info and hide export for staff
+  const user = auth.getUser();
+  document.getElementById('userBadge').textContent = `${user.role === 'admin' ? '👤' : '📋'} ${user.username}`;
+
+  if (!auth.canExport()) {
+    document.getElementById('btnExportBulk').hidden = true;
+    document.getElementById('btnExportSelected').hidden = true;
+    document.querySelectorAll('a[href*="/export/csv"]').forEach(el => el.hidden = true);
+  }
+
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    auth.logout();
+    window.location.href = '/login.html';
+  });
+
   document.getElementById('qSearch').addEventListener('input', renderList);
+
+  // Select all checkbox
+  document.getElementById('qSelectAll').addEventListener('change', (e) => {
+    const checkboxes = document.querySelectorAll('.q-row-checkbox');
+    if (e.target.checked) {
+      checkboxes.forEach((cb) => {
+        const id = parseInt(cb.dataset.id);
+        selected.add(id);
+        cb.checked = true;
+      });
+    } else {
+      checkboxes.forEach((cb) => {
+        const id = parseInt(cb.dataset.id);
+        selected.delete(id);
+        cb.checked = false;
+      });
+    }
+    updateSelectionUI();
+  });
+
+  // Export all (issued)
+  document.getElementById('btnExportBulk').addEventListener('click', async () => {
+    try {
+      const resp = await fetch('/api/quotations/export/csv?status=issued');
+      if (!resp.ok) throw new Error(`Export failed: ${resp.statusText}`);
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `quotations-bulk-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(`Failed to export: ${err.message}`);
+    }
+  });
+
+  // Export selected quotations
+  document.getElementById('btnExportSelected').addEventListener('click', async () => {
+    if (selected.size === 0) {
+      alert('No quotations selected.');
+      return;
+    }
+    try {
+      const selectedQuotes = all.filter((q) => selected.has(q.id));
+      const csv = generateSelectedCSV(selectedQuotes);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `quotations-selected-${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(`Failed to export: ${err.message}`);
+    }
+  });
+
+  // Clear selection
+  document.getElementById('btnClearSelection').addEventListener('click', () => {
+    selected.clear();
+    document.querySelectorAll('.q-row-checkbox').forEach((cb) => cb.checked = false);
+    document.getElementById('qSelectAll').checked = false;
+    updateSelectionUI();
+  });
+
+  // Generate CSV for selected quotations
+  function generateSelectedCSV(quotes) {
+    const rows = [];
+    rows.push('Source Quote Number,Source Customer,Source Salesman,Source Date,SKU,Item Name,Brand,Category,UOM,Quantity,Rate,Line Total,Price Category,Quote Status');
+    for (const q of quotes) {
+      if (!q.lines || q.lines.length === 0) continue;
+      for (const line of q.lines) {
+        const values = [
+          q.docNumber || 'DRAFT',
+          q.customer || 'QUOTATION',
+          q.salesman || 'DIRECT SMAN',
+          q.createdAt,
+          line.sku || '',
+          line.name || '',
+          line.brand || '',
+          line.category || '',
+          line.uom || 'Nos',
+          line.qty || 0,
+          line.rate || 0,
+          line.amount || 0,
+          q.priceCategory || 'list',
+          q.status || 'draft',
+        ];
+        rows.push(values.map((v) => {
+          const s = String(v == null ? '' : v);
+          return (s.includes(',') || s.includes('"') || s.includes('\n')) ? `"${s.replace(/"/g, '""')}"` : s;
+        }).join(','));
+      }
+    }
+    return rows.join('\n');
+  }
+
   load();
 </script>
 </body>

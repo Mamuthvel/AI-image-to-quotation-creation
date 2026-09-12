@@ -647,6 +647,46 @@ async function issueAndPrint() {
   }
 }
 
+/* Export quotation as CSV */
+async function exportCSV() {
+  try {
+    if (!currentQuoteId) {
+      $('saveMsg').textContent = 'Save the quotation first.';
+      return;
+    }
+    const resp = await fetch(`/api/quotations/${currentQuoteId}/export/csv`);
+    if (!resp.ok) throw new Error(`Export failed: ${resp.statusText}`);
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `quotation-${currentDocNumber || 'draft'}-${Date.now()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    $('saveMsg').textContent = 'CSV exported.';
+  } catch (err) {
+    $('saveMsg').textContent = err.message;
+  }
+}
+
+/* ───────────────────────────────────────────── user info & access control */
+
+const user = auth.getUser();
+document.getElementById('userBadge').textContent = `${user.role === 'admin' ? '👤' : '📋'} ${user.username}`;
+document.getElementById('adminLink').hidden = !auth.isAdmin();
+
+document.getElementById('btnLogout').addEventListener('click', () => {
+  auth.logout();
+  window.location.href = '/login.html';
+});
+
+// Hide export button for staff
+if (!auth.canExport()) {
+  $('btnExport').hidden = true;
+}
+
 /* ───────────────────────────────────────────── wiring */
 
 const dz = $('dropzone');
@@ -672,6 +712,7 @@ $('btnRecord').addEventListener('click', toggleRecording);
 $('btnCreate').addEventListener('click', createQuotation);
 $('btnSave').addEventListener('click', saveQuote);
 $('btnPrint').addEventListener('click', issueAndPrint);
+$('btnExport').addEventListener('click', exportCSV);
 $('mergeAdd').addEventListener('click', () => commitIncoming('merge'));
 $('mergeNew').addEventListener('click', () => commitIncoming('new'));
 $('mergeCancel').addEventListener('click', () => { pendingIncoming = null; $('mergeDialog').hidden = true; });

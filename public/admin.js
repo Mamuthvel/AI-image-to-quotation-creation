@@ -215,10 +215,101 @@ async function removeItem(item) {
   }
 }
 
+/* ───────────────────────────────────────────── user info & logout */
+
+const user = auth.getUser();
+$('userBadge').textContent = `👤 ${user.username}`;
+$('btnLogout').addEventListener('click', () => {
+  auth.logout();
+  window.location.href = '/login.html';
+});
+
+/* ───────────────────────────────────────────── export / import */
+
+async function exportCatalog() {
+  try {
+    const resp = await fetch('/api/catalog/export/csv');
+    if (!resp.ok) throw new Error(`Export failed: ${resp.statusText}`);
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `catalog-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert(`Failed to export: ${err.message}`);
+  }
+}
+
+async function importCatalog() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv';
+  input.addEventListener('change', async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const lines = text.trim().split('\n').map((l) => l.split(','));
+      if (lines.length < 2) throw new Error('CSV must have header + at least 1 item');
+      const header = lines[0];
+      const skuIdx = header.indexOf('SKU');
+      const nameIdx = header.indexOf('Name');
+      const brandIdx = header.indexOf('Brand');
+      const catIdx = header.indexOf('Category');
+      const uomIdx = header.indexOf('UOM');
+      const priceIdx = header.indexOf('List Price');
+      const attrsIdx = header.indexOf('Attributes (JSON)');
+
+      if (skuIdx === -1 || nameIdx === -1 || brandIdx === -1 || catIdx === -1 || priceIdx === -1) {
+        throw new Error('CSV missing required columns: SKU, Name, Brand, Category, List Price');
+      }
+
+      let imported = 0;
+      let failed = 0;
+      const errors = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.length < 2 || !line[skuIdx]?.trim()) continue;
+
+        try {
+          const attrs = attrsIdx !== -1 && line[attrsIdx]?.trim() ? JSON.parse(line[attrsIdx]) : {};
+          const item = {
+            sku: line[skuIdx]?.trim(),
+            name: line[nameIdx]?.trim(),
+            brand: line[brandIdx]?.trim(),
+            category: line[catIdx]?.trim(),
+            uom: line[uomIdx]?.trim() || 'Nos',
+            listPrice: parseFloat(line[priceIdx]) || 0,
+            attrs,
+          };
+          await api('POST', '/api/items', item);
+          imported++;
+        } catch (err) {
+          failed++;
+          errors.push(`Row ${i + 1}: ${err.message}`);
+        }
+      }
+
+      alert(`Imported ${imported} items${failed ? `, ${failed} failed` : ''}${errors.length ? '\n\nErrors:\n' + errors.slice(0, 5).join('\n') : ''}`);
+      if (imported > 0) await loadItems();
+    } catch (err) {
+      alert(`Failed to import: ${err.message}`);
+    }
+  });
+  input.click();
+}
+
 /* ───────────────────────────────────────────── wiring */
 
 $('search').addEventListener('input', render);
 $('btnAdd').addEventListener('click', () => openForm(null));
+$('btnExportCatalog').addEventListener('click', exportCatalog);
+$('btnImportCatalog').addEventListener('click', importCatalog);
 $('formClose').addEventListener('click', closeForm);
 $('formCancel').addEventListener('click', closeForm);
 $('itemModal').addEventListener('click', (e) => { if (e.target === $('itemModal')) closeForm(); });
