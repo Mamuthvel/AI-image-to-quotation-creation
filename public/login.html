@@ -15,9 +15,13 @@
   }
 
   :root {
-    --primary: #2563eb;
-    --primary-dark: #1e40af;
-    --primary-light: #3b82f6;
+    /* home page theme tokens */
+    --ink: #14181B;
+    --ink-hover: #2B3339;
+    --phase-b: #1F5FA8;
+    --phase-b-bg: #EDF3FB;
+
+    --primary: var(--phase-b);
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
@@ -33,84 +37,72 @@
     --gray-900: #111827;
   }
 
-  html {
-    scroll-behavior: smooth;
+  html, body {
+    height: 100%;
+    overflow: hidden;
   }
 
   body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: 12px;
     color: var(--gray-900);
   }
 
   .login-wrapper {
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
   }
 
   .login-card {
     background: white;
     border-radius: 12px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    padding: 40px;
+    padding: 24px 28px;
   }
 
   .login-header {
     text-align: center;
-    margin-bottom: 32px;
-  }
-
-  .logo {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
+    margin-bottom: 18px;
   }
 
   .login-header h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     color: var(--gray-900);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .login-header p {
-    font-size: 14px;
+    font-size: 12.5px;
     color: var(--gray-500);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   .form-container {
-    margin-bottom: 24px;
+    margin-bottom: 14px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
   }
 
   .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-group:last-child {
     margin-bottom: 0;
   }
 
   label {
     display: block;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--gray-700);
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -122,11 +114,11 @@
   input[type="text"],
   input[type="password"] {
     width: 100%;
-    padding: 11px 14px;
+    padding: 9px 12px;
     border: 1.5px solid var(--gray-300);
-    border-radius: 8px;
+    border-radius: 7px;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     color: var(--gray-900);
     background: var(--gray-50);
     transition: all 0.2s ease;
@@ -137,7 +129,7 @@
     outline: none;
     border-color: var(--primary);
     background: white;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(31, 95, 168, 0.12);
   }
 
   input[type="text"]::placeholder,
@@ -146,14 +138,14 @@
   }
 
   .role-selector {
-    margin: 28px 0;
+    margin: 14px 0;
   }
 
   .role-label {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
     color: var(--gray-700);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     display: block;
@@ -162,7 +154,7 @@
   .role-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .role-option {
@@ -177,7 +169,7 @@
 
   .role-option label {
     display: block;
-    padding: 14px 12px;
+    padding: 8px 10px;
     border: 2px solid var(--gray-200);
     border-radius: 8px;
     text-align: center;
@@ -186,27 +178,27 @@
     text-transform: none;
     margin-bottom: 0;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12.5px;
     background: var(--gray-50);
   }
 
   .role-option input[type="radio"]:checked + label {
     border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+    background: var(--phase-b-bg);
     color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(31, 95, 168, 0.12);
   }
 
   .role-badge {
-    font-size: 20px;
-    margin-bottom: 4px;
+    font-size: 15px;
+    margin-bottom: 2px;
   }
 
   .role-option label span {
     display: block;
-    font-size: 12px;
+    font-size: 10.5px;
     color: var(--gray-500);
-    margin-top: 4px;
+    margin-top: 2px;
   }
 
   .role-option input[type="radio"]:checked + label span {
@@ -217,12 +209,12 @@
     background: #fee2e2;
     border: 1px solid #fecaca;
     color: #dc2626;
-    padding: 12px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 20px;
+    padding: 9px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    margin-bottom: 12px;
     display: none;
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   .error-alert.show {
@@ -235,28 +227,29 @@
 
   .login-button {
     width: 100%;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 10px 16px;
+    background: var(--ink);
     color: white;
-    border: none;
+    border: 1px solid var(--ink);
     border-radius: 8px;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background .12s ease, border-color .12s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-top: 20px;
+    margin-top: 4px;
   }
 
   .login-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+    background: var(--ink-hover);
+    border-color: var(--ink-hover);
   }
 
-  .login-button:active:not(:disabled) {
-    transform: translateY(0);
+  .login-button:focus-visible {
+    outline: 2px solid var(--phase-b);
+    outline-offset: 2px;
   }
 
   .login-button:disabled {
@@ -267,7 +260,7 @@
   .divider {
     display: flex;
     align-items: center;
-    margin: 24px 0;
+    margin: 14px 0;
     color: var(--gray-300);
   }
 
@@ -289,23 +282,23 @@
     background: var(--gray-50);
     border: 1px solid var(--gray-200);
     border-radius: 8px;
-    padding: 16px;
-    margin-top: 24px;
+    padding: 10px 14px;
+    margin-top: 0;
   }
 
   .demo-credentials h3 {
-    font-size: 12px;
+    font-size: 10.5px;
     font-weight: 700;
     color: var(--gray-700);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
 
   .demo-item {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--gray-600);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -349,15 +342,26 @@
 
   @media (max-width: 480px) {
     .login-card {
-      padding: 32px 24px;
+      padding: 20px 18px;
     }
 
-    .login-header h1 {
-      font-size: 24px;
-    }
-
-    .role-options {
+    .form-row {
       grid-template-columns: 1fr;
+      gap: 14px;
+    }
+  }
+
+  @media (max-height: 700px) {
+    .login-header {
+      margin-bottom: 12px;
+    }
+
+    .demo-credentials {
+      display: none;
+    }
+
+    .divider {
+      display: none;
     }
   }
 </style>
@@ -367,7 +371,6 @@
 <div class="login-wrapper">
   <div class="login-card">
     <div class="login-header">
-      <div class="logo">⚡</div>
       <h1>Limras Electricals</h1>
       <p>Quotation Management System</p>
     </div>
@@ -376,29 +379,31 @@
       <div id="errorAlert" class="error-alert"></div>
 
       <div class="form-container">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <div class="input-wrapper">
-            <input
-              id="username"
-              type="text"
-              placeholder="admin or staff"
-              required
-              autocomplete="off"
-              autofocus
-            />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <div class="input-wrapper">
+              <input
+                id="username"
+                type="text"
+                placeholder="admin or staff"
+                required
+                autocomplete="off"
+                autofocus
+              />
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="input-wrapper">
-            <input
-              id="password"
-              type="password"
-              placeholder="Leave empty for demo"
-              required
-            />
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <input
+                id="password"
+                type="password"
+                placeholder="Leave empty"
+                required
+              />
+            </div>
           </div>
         </div>
       </div>
